@@ -1,5 +1,6 @@
 import React from 'react';
 import { TiltCard } from './TiltCard';
+import { JsonTreeViewer } from './JsonTreeViewer';
 
 export interface CapabilitiesProps {
   cloudSync: boolean;
@@ -71,76 +72,18 @@ export const Capabilities: React.FC<CapabilitiesProps> = ({
           </div>
 
           <div className="config-body">
-            <div className="config-json-line">
-              <span className="line-number">1</span>
-              <span className="line-content">{'{'}</span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">2</span>
-              <span className="line-content">
-                &nbsp;&nbsp;<span className="json-key">"edgeNode"</span>: <span className="json-string">"Voyant-RECD-Pune"</span>,
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">3</span>
-              <span className="line-content">
-                &nbsp;&nbsp;<span className="json-key">"samplingRate"</span>: <span className="json-string">"{samplingRate}"</span>,
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">4</span>
-              <span className="line-content">
-                &nbsp;&nbsp;<span className="json-key">"protocols"</span>: [
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">5</span>
-              <span className="line-content">
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="json-string">"ModbusRTU"</span>,
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">6</span>
-              <span className="line-content">
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="json-string">"MQTT"</span>
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">7</span>
-              <span className="line-content">&nbsp;&nbsp;],</span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">8</span>
-              <span className="line-content">
-                &nbsp;&nbsp;<span className="json-key">"controllers"</span>: {'{'}
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">9</span>
-              <span className="line-content">
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="json-key">"dpLoop"</span>: <span className="json-string">"{vibrationLoop ? 'Active' : 'Standby'}"</span>,
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">10</span>
-              <span className="line-content">
-                &nbsp;&nbsp;&nbsp;&nbsp;<span className="json-key">"exhaustTemp"</span>: <span className="json-string">"Normal ({exhaustTemp.toFixed(1)} C)"</span>
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">11</span>
-              <span className="line-content">&nbsp;&nbsp;{'}'},</span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">12</span>
-              <span className="line-content">
-                &nbsp;&nbsp;<span className="json-key">"cloudSync"</span>: <span className="json-boolean">{cloudSync ? 'true' : 'false'}</span>
-              </span>
-            </div>
-            <div className="config-json-line">
-              <span className="line-number">13</span>
-              <span className="line-content">{'}'}</span>
-            </div>
+            <JsonTreeViewer
+              data={{
+                edgeNode: 'Voyant-RECD-Pune',
+                samplingRate,
+                protocols: ['ModbusRTU', 'MQTT'],
+                controllers: {
+                  dpLoop: vibrationLoop ? 'Active' : 'Standby',
+                  exhaustTemp: `Normal (${exhaustTemp.toFixed(1)} C)`,
+                },
+                cloudSync,
+              }}
+            />
           </div>
 
           <div className="config-control-panel">

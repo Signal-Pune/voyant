@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { CheckCircle2, Cpu, Thermometer, Activity, Zap } from 'lucide-react';
+import { CheckCircle2, Cpu, Thermometer, Activity, Zap, AlertTriangle } from 'lucide-react';
 import { CircularProgress } from './CircularProgress';
 
 export interface TelemetryProps {
@@ -40,11 +40,24 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
   // Compliance status fill width
   const complianceWidth = cpcbStatus === 'CPCB OK' ? 100 : cpcbStatus === 'WARNING' ? 50 : 25;
 
+  const showFailover = cpcbStatus === 'WARNING' || cpcbStatus === 'CRITICAL';
+
   return (
     <div
       className={`telemetry-card ${isCompact ? 'compact-telemetry' : ''}`}
       id={isCompact ? 'telemetry-dashboard-compact' : 'telemetry-dashboard'}
     >
+      {/* Mobbin-inspired floating warning banner */}
+      {showFailover && (
+        <div className="telemetry-alert-banner">
+          <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+          <div>
+            <strong>SENSOR FAILOVER TO PIN 12 ACTIVE</strong>
+            <span>Primary thermocouple open-circuit code ERR-TEMP-01. Re-routed to redundant channel.</span>
+          </div>
+        </div>
+      )}
+
       <div className="telemetry-header">
         <div className="telemetry-title">
           <span className="telemetry-live-dot"></span>
@@ -71,7 +84,7 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
             </CircularProgress>
             <div className="metric-value-block">
               <div className="metric-label">PM Capture Rate</div>
-              <div className="metric-value" id="pm-val">
+              <div className="metric-value" id="pm-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
                 {pmCapture.toFixed(1)}
                 <span className="metric-unit">%</span>
               </div>
@@ -96,7 +109,7 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
             </CircularProgress>
             <div className="metric-value-block">
               <div className="metric-label">Exhaust Gas Temp</div>
-              <div className="metric-value" id="temp-val">
+              <div className="metric-value" id="temp-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
                 {exhaustTemp.toFixed(1)}
                 <span className="metric-unit"> °C</span>
               </div>
@@ -121,7 +134,7 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
             </CircularProgress>
             <div className="metric-value-block">
               <div className="metric-label">Differential Pressure</div>
-              <div className="metric-value" id="dp-val">
+              <div className="metric-value" id="dp-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
                 {diffPressure.toFixed(1)}
                 <span className="metric-unit"> kPa</span>
               </div>
@@ -146,7 +159,7 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
             </CircularProgress>
             <div className="metric-value-block">
               <div className="metric-label">CPCB Norms</div>
-              <div className="metric-value" id="compliance-val">
+              <div className="metric-value" id="compliance-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
                 {cpcbStatus}
               </div>
             </div>

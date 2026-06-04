@@ -7,6 +7,10 @@ export const Footer: React.FC = () => {
         <div className="footer-info">
           <span className="footer-meta" id="footer-details">
             VOYANT SYSTEMS PRIVATE LIMITED / CIN: U62013PN2023PTC225117 / ESTD. 2023
+            <span className="compliance-badge" title="Registered with Registrar of Companies, Pune">
+              <svg viewBox="0 0 16 16" width="12" height="12" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="3 8 6 11 13 4"></polyline></svg>
+              ROC Verified
+            </span>
           </span>
           <span className="footer-copyright" style={{ color: 'var(--text-muted)', fontSize: '0.82rem' }}>
             Registered Office: Pimple Saudagar, Pune, Maharashtra, India.

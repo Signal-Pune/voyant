@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Brain, AlertOctagon, RefreshCw, Layers } from 'lucide-react';
 
 export interface ReActStep {
@@ -28,6 +28,8 @@ export const AIAgentSimulator: React.FC<AIAgentSimulatorProps> = ({
   onClearFault,
 }) => {
   const terminalEndRef = useRef<HTMLDivElement>(null);
+  const [flashClogging, setFlashClogging] = useState(false);
+  const [flashDropout, setFlashDropout] = useState(false);
 
   useEffect(() => {
     if (terminalEndRef.current) {
@@ -154,8 +156,16 @@ export const AIAgentSimulator: React.FC<AIAgentSimulatorProps> = ({
               
               <div className="fault-btn-group">
                 <button
-                  className={`fault-btn ${activeFault === 'clogging' ? 'active' : ''}`}
-                  onClick={() => activeFault === 'clogging' ? onClearFault() : onInjectFault('clogging')}
+                  className={`fault-btn ${activeFault === 'clogging' ? 'active' : ''} ${flashClogging ? 'flash' : ''}`}
+                  onClick={() => {
+                    if (activeFault === 'clogging') {
+                      onClearFault();
+                    } else {
+                      setFlashClogging(true);
+                      setTimeout(() => setFlashClogging(false), 300);
+                      onInjectFault('clogging');
+                    }
+                  }}
                   disabled={activeFault === 'dropout'}
                 >
                   <span>Inject Filter Clogging</span>
@@ -163,8 +173,16 @@ export const AIAgentSimulator: React.FC<AIAgentSimulatorProps> = ({
                 </button>
 
                 <button
-                  className={`fault-btn ${activeFault === 'dropout' ? 'active' : ''}`}
-                  onClick={() => activeFault === 'dropout' ? onClearFault() : onInjectFault('dropout')}
+                  className={`fault-btn ${activeFault === 'dropout' ? 'active' : ''} ${flashDropout ? 'flash' : ''}`}
+                  onClick={() => {
+                    if (activeFault === 'dropout') {
+                      onClearFault();
+                    } else {
+                      setFlashDropout(true);
+                      setTimeout(() => setFlashDropout(false), 300);
+                      onInjectFault('dropout');
+                    }
+                  }}
                   disabled={activeFault === 'clogging'}
                 >
                   <span>Simulate Sensor Dropout</span>
