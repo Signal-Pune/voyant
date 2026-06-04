@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { TelemetryPanel } from './TelemetryPanel';
 import type { TelemetryProps } from './TelemetryPanel';
 import { ArrowRight } from 'lucide-react';
+import LaserFlow from './LaserFlow';
 
 interface HeroProps extends TelemetryProps {}
 
@@ -59,11 +60,22 @@ const titleLines = ['CPCB', 'Compliance.', 'Automated.'];
 
 export const Hero = (props: HeroProps) => {
   return (
-    <section className="hero-section" id="hero-section">
-      <div className="container hero-grid">
+    <section className="hero-section" id="hero-section" style={{ position: 'relative' }}>
+      {/* Background LaserFlow Animation */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, overflow: 'hidden' }}>
+        <LaserFlow 
+          color="#38bdf8" 
+          flowSpeed={0.4} 
+          wispDensity={1.2}
+          fogIntensity={0.5}
+        />
+      </div>
+
+      <div className="container hero-grid" style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
         {/* LEFT: Editorial copy */}
         <motion.div
           className="hero-copy"
+          style={{ pointerEvents: 'auto' }}
           variants={containerVariants}
           initial="hidden"
           animate="visible"
@@ -133,6 +145,7 @@ export const Hero = (props: HeroProps) => {
         {/* RIGHT: Live telemetry panel */}
         <motion.div
           className="hero-panel"
+          style={{ pointerEvents: 'auto' }}
           aria-label="Live RECD telemetry dashboard"
           variants={panelVariants}
           initial="hidden"
