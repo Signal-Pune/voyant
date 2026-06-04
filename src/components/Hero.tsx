@@ -60,17 +60,7 @@ const titleLines = ['CPCB', 'Compliance.', 'Automated.'];
 
 export const Hero = (props: HeroProps) => {
   return (
-    <section className="hero-section" id="hero-section" style={{ position: 'relative' }}>
-      {/* Background LaserFlow Animation */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 0, overflow: 'hidden' }}>
-        <LaserFlow 
-          color="#38bdf8" 
-          flowSpeed={0.4} 
-          wispDensity={1.2}
-          fogIntensity={0.5}
-        />
-      </div>
-
+    <section className="hero-section" id="hero-section">
       <div className="container hero-grid" style={{ position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
         {/* LEFT: Editorial copy */}
         <motion.div
@@ -145,17 +135,35 @@ export const Hero = (props: HeroProps) => {
         {/* RIGHT: Live telemetry panel */}
         <motion.div
           className="hero-panel"
-          style={{ pointerEvents: 'auto' }}
+          style={{ pointerEvents: 'auto', position: 'relative' }}
           aria-label="Live RECD telemetry dashboard"
           variants={panelVariants}
           initial="hidden"
           animate="visible"
         >
-          <div className="hero-panel-label">
+          {/* LaserFlow animation container aligned to the top edge of the panel label */}
+          <div style={{
+            position: 'absolute',
+            top: '-250px',
+            height: '500px',
+            left: '-60px',
+            right: '-60px',
+            zIndex: 0,
+            pointerEvents: 'none'
+          }}>
+            <LaserFlow 
+              color="#CF9EFF" 
+              flowSpeed={0.4} 
+              wispDensity={1.2}
+              fogIntensity={0.5}
+            />
+          </div>
+
+          <div className="hero-panel-label" style={{ position: 'relative', zIndex: 1 }}>
             <span className="hero-panel-dot" />
             LIVE_TELEMETRY — NODE_RECD_02
           </div>
-          <div className="hero-panel-inner">
+          <div className="hero-panel-inner" style={{ position: 'relative', zIndex: 1 }}>
             <TelemetryPanel {...props} />
           </div>
         </motion.div>
