@@ -1,0 +1,106 @@
+[
+  {
+    "name": "multi_replace_file_content",
+    "args": {
+      "Description": "\"Update index.html copy and telemetry fields to represent Voyant Systems real RECD and CPCB compliance details, founders Rajesh Bhalerao/Hemraj Bendale, CIN, and registered address.\"",
+      "Instruction": "\"Replace the template content and AI slop in index.html with real Voyant Systems startup data.\"",
+      "ReplacementChunks": "[{\"AllowMultiple\":false,\"EndLine\":9,\"ReplacementContent\":\"  <title>Voyant Systems - Plug-and-Play RECD Retrofits & CPCB Compliance</title>\\n  <meta name=\\\"description\\\" content=\\\"Voyant Systems provides CPCB-compliant Plug-and-Play Retrofit RECD controllers and AI-enabled SaaS telemetry dashboards for diesel generators in Pune, India.\\\">\",\"StartLine\":5,\"TargetContent\":\"  <title>Voyant Systems - Industrial IoT and Automation</title>\\n  <meta name=\\\"description\\\" content=\\\"Industrial IoT and automation systems for machine monitoring, sensor integration, dashboards, and plant-floor data capture.\\\">\"},{\"AllowMultiple\":false,\"EndLine\":32,\"ReplacementContent\":\"          <li><a href=\\\"#solutions\\\" id=\\\"link-solutions\\\">Retrofit Solutions</a></li>\\n          <li><a href=\\\"#capabilities\\\" id=\\\"link-capabilities\\\">Core Technology</a></li>\\n          <li><a href=\\\"#why-voyant\\\" id=\\\"link-why-voyant\\\">Compliance Focus</a></li>\",\"StartLine\":28,\"TargetContent\":\"          <li><a href=\\\"#solutions\\\" id=\\\"link-solutions\\\">Solutions</a></li>\\n          <li><a href=\\\"#capabilities\\\" id=\\\"link-capabilities\\\">Capabilities</a></li>\\n          <li><a href=\\\"#why-voyant\\\" id=\\\"link-why-voyant\\\">Why Voyant</a></li>\"},{\"AllowMultiple\":false,\"EndLine\":64,\"ReplacementContent\":\"          <div class=\\\"hero-badge\\\">\\n            <span class=\\\"hero-badge-dot\\\"></span>\\n            Plug-and-Play Compliance\\n          </div>\\n          \\n          <h1 class=\\\"hero-title\\\">\\n            CPCB emission compliance, retrofitted.\\n          </h1>\\n          \\n          <p class=\\\"hero-subtitle\\\">\\n            Voyant Systems builds plug-and-play retrofit controllers for Diesel Generator sets (RECDs) that guarantee CPCB norms compliance with real-time AI SaaS analytics.\\n          </p>\",\"StartLine\":50,\"TargetContent\":\"          <div class=\\\"hero-badge\\\">\\n            <span class=\\\"hero-badge-dot\\\"></span>\\n            Industrial IoT Solutions\\n          </div>\\n          \\n          <h1 class=\\\"hero-title\\\">\\n            Plant-floor data, wired into deci\n<truncated 35727 bytes>",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/index.html\"",
+      "toolAction": "\"Updating index.html with real data\"",
+      "toolSummary": "\"Updating copy and fields in index.html to represent real Voyant Systems details\""
+    }
+  },
+  {
+    "name": "multi_replace_file_content",
+    "args": {
+      "Description": "\"Update script.js simulation parameters, metrics, log statements, and JSON configuration elements to match the new RECD and CPCB compliance details.\"",
+      "Instruction": "\"Replace the telemetry simulation variables, logging console text, and JSON configuration editor code in script.js.\"",
+      "ReplacementChunks": "[{\"AllowMultiple\":false,\"EndLine\":65,\"ReplacementContent\":\"  // --- TELEMETRY SIMULATION ---\\n  const pmVal = document.getElementById('pm-val');\\n  const tempVal = document.getElementById('temp-val');\\n  const dpVal = document.getElementById('dp-val');\\n  const complianceVal = document.getElementById('compliance-val');\\n\\n  const pmFill = document.getElementById('pm-fill');\\n  const tempFill = document.getElementById('temp-fill');\\n  const dpFill = document.getElementById('dp-fill');\\n  const complianceFill = document.getElementById('compliance-fill');\\n\\n  let telemetryIntervalSpeed = 1000; // default 1s simulation updates\\n  let telemetryTimer = null;\\n\\n  // Initial target values matching raw requirements\\n  let pm = 84.5;\\n  let temp = 345.2;\\n  let dp = 4.2;\\n  let recdStatus = 'Active'; // replaces vibrationStatus\\n\\n  function updateTelemetryValues() {\\n    // Slight random walk simulation\\n    if (recdStatus === 'Active') {\\n      pm = Math.max(81.0, Math.min(88.0, pm + (Math.random() - 0.5) * 0.3));\\n      temp = Math.max(320.0, Math.min(365.0, temp + (Math.random() - 0.5) * 3));\\n      dp = Math.max(3.8, Math.min(4.9, dp + (Math.random() - 0.5) * 0.15));\\n    } else {\\n      // Standby / Bypassed state\\n      pm = Math.max(0, pm - 8.0);\\n      temp = Math.max(45.0, temp - 15.0);\\n      dp = Math.max(0.1, dp - 0.4);\\n    }\\n    \\n    // Update text\\n    pmVal.innerHTML = `${pm.toFixed(1)}<span class=\\\"metric-unit\\\">%</span>`;\\n    tempVal.innerHTML = `${temp.toFixed(1)}<span class=\\\"metric-unit\\\"> \u00b0C</span>`;\\n    dpVal.innerHTML = `${dp.toFixed(1)}<span class=\\\"metric-unit\\\"> kPa</span>`;\\n    \\n    if (recdStatus === 'Active') {\\n      complianceVal.textContent = 'CPCB OK';\\n      complianceFill.style.width = '100%';\\n    } else {\\n      complianceVal.textContent = 'BYPASS';\\n      complianceFill.style.width = '25%';\\n    }\\n\\n    // Update visual bars\\n    pmFill.style.width = `${((pm - 70) / (95 - 70)) * 100}%`; // scale between 70% and 95%\\n    tempFill.style.width = `${((temp - 40) / (400 - 40)) *\n<truncated 9190 bytes>",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/script.js\"",
+      "toolAction": "\"Updating script.js with real simulation data\"",
+      "toolSummary": "\"Updating JavaScript telemetry logic and log strings in script.js\""
+    }
+  },
+  {
+    "name": "replace_file_content",
+    "args": {
+      "AllowMultiple": "false",
+      "Description": "\"Fix display rules for compact-telemetry and hero-proof inside the media query in style.css so they display correctly on mobile screens.\"",
+      "EndLine": "1176",
+      "Instruction": "\"Add display: block to hero-proof and compact-telemetry classes in the 1024px media query in style.css.\"",
+      "ReplacementContent": "\"  .hero-proof {\\n    display: block;\\n    min-height: 440px;\\n  }\\n  .hero-proof-img {\\n    min-height: 440px;\\n  }\\n  .compact-telemetry {\\n    display: block;\\n    position: relative;\\n    right: auto;\\n    bottom: auto;\\n    width: 100%;\\n    margin-top: -2rem;\\n  }\"",
+      "StartLine": "1163",
+      "TargetContent": "\"  .hero-proof {\\n    min-height: 440px;\\n  }\\n  .hero-proof-img {\\n    min-height: 440px;\\n  }\\n  .compact-telemetry {\\n    position: relative;\\n    right: auto;\\n    bottom: auto;\\n    width: 100%;\\n    margin-top: -2rem;\\n  }\"",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/style.css\"",
+      "toolAction": "\"Fixing mobile layout displays\"",
+      "toolSummary": "\"Updating display values for mobile layouts in style.css\""
+    }
+  },
+  {
+    "name": "replace_file_content",
+    "args": {
+      "AllowMultiple": "false",
+      "Description": "\"Update task list to mark all tasks as completed since all files (index.html, script.js, style.css) have been successfully updated with real startup information.\"",
+      "EndLine": "16",
+      "Instruction": "\"Mark all checklist items in task.md as completed.\"",
+      "ReplacementContent": "\"- [x] Update index.html website copy & telemetry variables\\n  - [x] Update header metadata and title tags\\n  - [x] Update hero header section (Plug-and-Play Retrofit controllers, CPCB compliance)\\n  - [x] Change telemetry panel metrics (PM Capture Rate, Exhaust Gas Temp, Differential Pressure, CPCB Status)\\n  - [x] Update \\\"What We Build\\\" section (RECD compliance, CPCB norms, AI-SaaS analytics)\\n  - [x] Update \\\"Technical Capabilities\\\" section (firmware loops, sensor integration, dashboards)\\n  - [x] Update \\\"Local Engineering\\\" and exhibition section (Rajesh Bhalerao, Hemraj Bendale, COEP Pune Startup Fest '26, TLC Expo Chinchwad)\\n  - [x] Update CTA/Contact section (registered address, CIN, email)\\n- [x] Update script.js simulation & interactive controls\\n  - [x] Update simulation parameters and random-walk values (ranges for DP, Temp, PM Capture, status)\\n  - [x] Update log console outputs to reflect real emission diagnostics\\n  - [x] Update interactive config editor bindings and label text\\n- [x] Verify correctness and functionality\\n  - [x] Verify page layout looks premium and all details are accurate\\n  - [x] Create walkthrough.md summary of changes\"",
+      "StartLine": "3",
+      "TargetContent": "\"- `[ ]` Update index.html website copy & telemetry variables\\n  - `[ ]` Update header metadata and title tags\\n  - `[ ]` Update hero header section (Plug-and-Play Retrofit controllers, CPCB compliance)\\n  - `[ ]` Change telemetry panel metrics (PM Capture Rate, Exhaust Gas Temp, Differential Pressure, CPCB Status)\\n  - `[ ]` Update \\\"What We Build\\\" section (RECD compliance, CPCB norms, AI-SaaS analytics)\\n  - `[ ]` Update \\\"Technical Capabilities\\\" section (firmware loops, sensor integration, dashboards)\\n  - `[ ]` Update \\\"Local Engineering\\\" and exhibition section (Rajesh Bhalerao, Hemraj Bendale, COEP Pune Startup Fest '26, TLC Expo Chinchwad)\\n  - `[ ]` Update CTA/Contact section (registered address, CIN, email)\\n- `[ ]` Update script.js simulation & interactive controls\\n  - `[ ]` Update simulation parameters and random-walk values (ranges for DP, Temp, PM Capture, status)\\n  - `[ ]` Update log console outputs to reflect real emission diagnostics\\n  - `[ ]` Update interactive config editor bindings and label text\\n- `[ ]` Verify correctness and functionality\\n  - `[ ]` Verify page layout looks premium and all details are accurate\\n  - `[ ]` Create walkthrough.md summary of changes\"",
+      "TargetFile": "\"/Users/shubham/.gemini/antigravity/brain/8590d569-30b8-498b-9d0f-760024b1b8b5/task.md\"",
+      "toolAction": "\"Marking tasks complete\"",
+      "toolSummary": "\"Updating task.md with completed tasks\""
+    }
+  },
+  {
+    "name": "multi_replace_file_content",
+    "args": {
+      "Description": "\"Add styles for the System Architecture section (layout, vector symbols, flow animations) and global scroll reveal transitions (with native CSS scroll-timeline and keyframes) in style.css.\"",
+      "Instruction": "\"Insert styling for architecture-grid, schema-svg, and scroll-reveal triggers in style.css.\"",
+      "ReplacementChunks": "[{\"AllowMultiple\":false,\"EndLine\":1010,\"ReplacementContent\":\"/* --- SYSTEM ARCHITECTURE SECTION --- */\\n.architecture-grid {\\n  display: grid;\\n  grid-template-columns: 1.15fr 0.85fr;\\n  gap: 5rem;\\n  align-items: center;\\n}\\n\\n.architecture-visual {\\n  background: var(--bg-card);\\n  border: 1px solid var(--border-color);\\n  border-radius: 8px;\\n  padding: 1.5rem;\\n  display: flex;\\n  justify-content: center;\\n  align-items: center;\\n  box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.6);\\n  position: relative;\\n  overflow: hidden;\\n}\\n\\n.architecture-visual::before {\\n  content: \\\"\\\";\\n  position: absolute;\\n  top: 0;\\n  left: 0;\\n  width: 100%;\\n  height: 100%;\\n  background: radial-gradient(circle at center, rgba(56, 189, 248, 0.04) 0%, transparent 70%);\\n  pointer-events: none;\\n}\\n\\n.schema-svg {\\n  width: 100%;\\n  height: auto;\\n  max-width: 600px;\\n  background: transparent;\\n}\\n\\n/* Base states for path drawing */\\n.svg-flow-path {\\n  stroke-dasharray: 8, 8;\\n  animation: svg-flow 25s linear infinite;\\n}\\n\\n@keyframes svg-flow {\\n  from { stroke-dashoffset: 200; }\\n  to { stroke-dashoffset: 0; }\\n}\\n\\n/* Blinking LEDs */\\n.svg-led-green {\\n  animation: led-blink-green 1s infinite alternate;\\n}\\n.svg-led-orange {\\n  animation: led-blink-orange 1.5s infinite alternate;\\n}\\n\\n@keyframes led-blink-green {\\n  0% { fill: rgba(34, 197, 94, 0.4); filter: none; }\\n  100% { fill: #22c55e; filter: drop-shadow(0 0 4px rgba(34, 197, 94, 0.6)); }\\n}\\n\\n@keyframes led-blink-orange {\\n  0% { fill: rgba(249, 115, 22, 0.4); filter: none; }\\n  100% { fill: #f97316; filter: drop-shadow(0 0 4px rgba(249, 115, 22, 0.6)); }\\n}\\n\\n/* Pulsing waves */\\n.svg-signal-wave {\\n  stroke: var(--accent-cyan);\\n  stroke-linecap: round;\\n  transform-origin: bottom left;\\n  animation: wave-pulse 2s infinite ease-in-out;\\n}\\n.svg-signal-wave:nth-child(2) {\\n  animation-delay: 0.6s;\\n}\\n.svg-signal-wave:nth-child(3) {\\n  animation-delay: 1.2s;\\n}\\n\\n@keyframes wave-pulse {\\n  0% { opacity: 0; transform: scale(0.8); }\\n  50% { opacity: 1; }\\n  100\n<truncated 2619 bytes>",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/style.css\"",
+      "toolAction": "\"Adding SVG schema and scroll reveal styles\"",
+      "toolSummary": "\"Updating style.css with SVG schema and scroll reveal animation rules\""
+    }
+  },
+  {
+    "name": "multi_replace_file_content",
+    "args": {
+      "Description": "\"Insert System Architecture section (and custom schema inline SVG diagram) and apply scroll reveal class triggers to containers inside index.html.\"",
+      "Instruction": "\"Add System Architecture section and apply reveal-item classes to Solutions cards, Capabilities content, Showcase cards, and CTA box in index.html.\"",
+      "ReplacementChunks": "[{\"AllowMultiple\":false,\"EndLine\":246,\"ReplacementContent\":\"        <div class=\\\"value-grid\\\">\\n          <!-- Card 1: Plug-and-Play Retrofit -->\\n          <div class=\\\"value-card reveal-item reveal-scroll-driven\\\" id=\\\"value-card-acquisition\\\">\\n            <div class=\\\"value-icon-box\\\">\\n              <svg class=\\\"value-icon\\\" viewBox=\\\"0 0 24 24\\\">\\n                <rect x=\\\"2\\\" y=\\\"2\\\" width=\\\"20\\\" height=\\\"8\\\" rx=\\\"2\\\" ry=\\\"2\\\"></rect>\\n                <rect x=\\\"2\\\" y=\\\"14\\\" width=\\\"20\\\" height=\\\"8\\\" rx=\\\"2\\\" ry=\\\"2\\\"></rect>\\n                <line x1=\\\"6\\\" y1=\\\"6\\\" x2=\\\"6.01\\\" y2=\\\"6\\\"></line>\\n                <line x1=\\\"6\\\" y1=\\\"18\\\" x2=\\\"6.01\\\" y2=\\\"18\\\"></line>\\n              </svg>\\n            </div>\\n            <h3>Plug-and-Play RECD Controllers</h3>\\n            <p>\\n              Easily retrofit legacy diesel generator (DG) sets with CPCB-approved controllers to verify PM capture efficiency without replacing the engine.\\n            </p>\\n          </div>\\n\\n          <!-- Card 2: AI-Enabled SaaS Model -->\\n          <div class=\\\"value-card reveal-item reveal-scroll-driven\\\" id=\\\"value-card-automation\\\">\\n            <div class=\\\"value-icon-box\\\">\\n              <svg class=\\\"value-icon\\\" viewBox=\\\"0 0 24 24\\\">\\n                <path d=\\\"M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z\\\"></path>\\n                <path d=\\\"M12 11v6\\\"></path>\\n                <path d=\\\"M9 14h6\\\"></path>\\n              </svg>\\n            </div>\\n            <h3>AI-Enabled SaaS Platform</h3>\\n            <p>\\n              Transition from one-time hardware sales to recurring analytics. Log continuous telemetry, predict filter clogging, and generate audit-ready compliance sheets.\\n            </p>\\n          </div>\\n\\n          <!-- Card 3: Specialty Sensor Deployments -->\\n          <div class=\\\"value-card reveal-item reveal-scroll-driven\\\" id=\\\"value-card-visibility\\\">\\n            <div class=\\\"value-icon-box\\\">\\n              <svg class=\\\"value-icon\\\" viewBox=\\\"0 0 24 24\\\">\\n              \n<truncated 15009 bytes>",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/index.html\"",
+      "toolAction": "\"Integrating SVG diagram and scroll triggers\"",
+      "toolSummary": "\"Updating index.html with new architecture section and reveal animations\""
+    }
+  },
+  {
+    "name": "replace_file_content",
+    "args": {
+      "AllowMultiple": "false",
+      "Description": "\"Append IntersectionObserver scroll reveal fallback logic at the bottom of script.js to support browsers without native scroll-driven animations.\"",
+      "EndLine": "209",
+      "Instruction": "\"Add scroll reveal IntersectionObserver code before DOMContentLoaded closing bracket in script.js.\"",
+      "ReplacementContent": "\"  // --- SCROLL REVEAL INTERSECTION OBSERVER FALLBACK ---\\n  if (!CSS.supports('(animation-timeline: view()) and (animation-range: entry)')) {\\n    const revealObserver = new IntersectionObserver((entries, observer) => {\\n      entries.forEach(entry => {\\n        if (entry.isIntersecting) {\\n          entry.target.classList.add('reveal-active');\\n          observer.unobserve(entry.target);\\n        }\\n      });\\n    }, {\\n      threshold: 0.15,\\n      rootMargin: '0px 0px -50px 0px'\\n    });\\n\\n    document.querySelectorAll('.reveal-item').forEach(el => {\\n      revealObserver.observe(el);\\n    });\\n  }\\n\\n  // Initial runs\\n  startTelemetry();\\n});\"",
+      "StartLine": "205",
+      "TargetContent": "\"  // Initial runs\\n  startTelemetry();\\n});\"",
+      "TargetFile": "\"/Users/shubham/Developer/voyant/script.js\"",
+      "toolAction": "\"Adding scroll reveal JS fallback\"",
+      "toolSummary": "\"Adding IntersectionObserver scroll reveal fallback to script.js\""
+    }
+  },
+  {
+    "name": "replace_file_content",
+    "args": {
+      "AllowMultiple": "false",
+      "Description": "\"Mark all items in task.md checklist as completed.\"",
+      "EndLine": "14",
+      "Instruction": "\"Mark all task checklist items as completed in task.md.\"",
+      "ReplacementContent": "\"- [x] Update task.md with new checklist items\\n- [x] Design and integrate the inline SVG diagram in index.html\\n  - [x] Design vector parts: Exhaust ducts, RECD filter, DP sensors, edge gateway, signal waves, cloud.\\n  - [x] Integrate it inline inside index.html Capabilities section.\\n  - [x] Add scroll reveal classes to index.html elements (value cards, section headers).\\n- [x] Update style.css with scroll-driven keyframes and styles\\n  - [x] Add CSS view timelines and animations for scroll reveals.\\n  - [x] Add scroll-driven flow animation for SVG exhaust particles and signal pulses.\\n  - [x] Ensure proper styling and responsive columns for the SVG block.\\n- [x] Update script.js with fallback Scroll/Intersection Observer logic\\n  - [x] Implement IntersectionObserver for non-compatible browsers.\\n  - [x] Verify script integrity and check console logs.\\n- [x] Create walkthrough.md summary of changes\"",
+      "StartLine": "3",
+      "TargetContent": "\"- `[ ]` Update task.md with new checklist items\\n- `[ ]` Design and integrate the inline SVG diagram in index.html\\n  - `[ ]` Design vector parts: Exhaust ducts, RECD filter, DP sensors, edge gateway, signal waves, cloud.\\n  - `[ ]` Integrate it inline inside index.html Capabilities section.\\n  - `[ ]` Add scroll reveal classes to index.html elements (value cards, section headers).\\n- `[ ]` Update style.css with scroll-driven keyframes and styles\\n  - `[ ]` Add CSS view timelines and animations for scroll reveals.\\n  - `[ ]` Add scroll-driven flow animation for SVG exhaust particles and signal pulses.\\n  - `[ ]` Ensure proper styling and responsive columns for the SVG block.\\n- `[ ]` Update script.js with fallback Scroll/Intersection Observer logic\\n  - `[ ]` Implement IntersectionObserver for non-compatible browsers.\\n  - `[ ]` Verify script integrity and check console logs.\\n- `[ ]` Create walkthrough.md summary of changes\"",
+      "TargetFile": "\"/Users/shubham/.gemini/antigravity/brain/8590d569-30b8-498b-9d0f-760024b1b8b5/task.md\"",
+      "toolAction": "\"Marking scroll reveal tasks complete\"",
+      "toolSummary": "\"Updating task.md with completed scroll animation tasks\""
+    }
+  }
+]
