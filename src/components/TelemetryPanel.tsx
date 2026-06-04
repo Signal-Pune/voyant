@@ -41,14 +41,10 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
   return (
     <div
       style={{
-        background: 'var(--bg-elevated)',
-        border: '1px solid var(--border-color)',
-        borderRadius: '4px',
-        overflow: 'hidden',
+        background: 'transparent',
         display: 'flex',
         flexDirection: 'column',
-        width: '100%',
-        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+        width: '100%'
       }}
       id={isCompact ? 'telemetry-dashboard-compact' : 'telemetry-dashboard'}
     >

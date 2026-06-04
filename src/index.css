@@ -1396,6 +1396,11 @@ footer {
 .hero-panel {
   display: flex;
   flex-direction: column;
+  border: 2px solid #CF9EFF;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 0 25px rgba(207, 158, 255, 0.2), 0 24px 60px -12px rgba(0, 0, 0, 0.7);
+  background: var(--bg-elevated);
 }
 .hero-panel-label {
   display: flex;
@@ -1406,15 +1411,14 @@ footer {
   color: var(--text-muted);
   letter-spacing: 0.1em;
   padding: 0.6rem 1rem;
-  border: 1px solid var(--border-color);
-  border-bottom: none;
+  border-bottom: 1px solid var(--border-color);
   background: var(--bg-elevated);
 }
 .hero-panel-dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: #22c55e; animation: pulseGreen 1.4s infinite alternate;
 }
-.hero-panel-inner { border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 24px 60px -12px rgba(0,0,0,0.6); }
+.hero-panel-inner { overflow: hidden; }
 .hero-scroll-cue {
   position: absolute;
   bottom: 2.5rem;
