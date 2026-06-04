@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Header } from './components/Header';
@@ -8,19 +8,7 @@ import type { ReActStep } from './components/AIAgentSimulator';
 import { SystemArchitecture } from './components/SystemArchitecture';
 import { Capabilities } from './components/Capabilities';
 import { Footer } from './components/Footer';
-import { ParticleCanvas } from './components/ParticleCanvas';
-import { MouseSpotlight } from './components/MouseSpotlight';
-import { ScrollProgress } from './components/ScrollProgress';
-import { MagneticButton } from './components/MagneticButton';
-import { SmoothScroll } from './components/SmoothScroll';
-import { CustomCursor } from './components/CustomCursor';
-import { LoadingScreen } from './components/LoadingScreen';
-import { MarqueeStrip } from './components/MarqueeStrip';
-import { BackToTop } from './components/BackToTop';
-import { SectionDivider } from './components/SectionDivider';
-import { AnimatedGridBackground } from './components/AnimatedGridBackground';
-import { SpotlightCard } from './components/SpotlightCard';
-import { Activity, Shield, Mail, Wrench, Cpu, Cloud, Gauge, FileCheck } from 'lucide-react';
+import { Activity, Shield, Mail, Wrench, Cpu, Cloud, Gauge, FileCheck, ArrowUpRight } from 'lucide-react';
 
 interface TelemetryLog {
   timestamp: string;
@@ -29,8 +17,6 @@ interface TelemetryLog {
 }
 
 function App() {
-  const [loaded, setLoaded] = useState(false);
-
   // --- TELEMETRY STATE ---
   const [pmCapture, setPmCapture] = useState(84.5);
   const [exhaustTemp, setExhaustTemp] = useState(345.2);
@@ -307,115 +293,64 @@ function App() {
     appendLog('SYSTEM', `Edge gateway sampling rate set to ${rate}`);
   };
 
+  const expoImgRef = useRef<HTMLImageElement>(null);
+
   // --- REGISTER GSAP PLUGIN ---
   gsap.registerPlugin(ScrollTrigger);
 
-  // --- ENHANCED SCROLL REVEALS ---
+  // --- CONSOLIDATED DATA-REVEAL SYSTEM ---
   useEffect(() => {
-    const revealObserver = new IntersectionObserver((entries, observer) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.12,
-      rootMargin: '0px 0px -60px 0px'
-    });
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) return;
 
-    document.querySelectorAll('.reveal-item, .fade-in-up, .fade-in-left, .fade-in-right').forEach(el => {
-      revealObserver.observe(el);
-    });
+    const observer = new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            (entry.target as HTMLElement).dataset.revealed = 'true';
+            entry.target.classList.add('is-revealed');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -48px 0px' }
+    );
 
-    return () => revealObserver.disconnect();
+    document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
   }, []);
 
-  // --- GSAP SECTION HEADER REVEALS ---
+  // --- EXPO PHOTO PARALLAX ---
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      document.querySelectorAll('.section-header').forEach((header) => {
-        gsap.from(header, {
-          y: 50,
-          opacity: 0,
-          scale: 0.96,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: header,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        });
-      });
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion || !expoImgRef.current) return;
 
-      document.querySelectorAll('.value-card').forEach((card, i) => {
-        gsap.from(card, {
-          y: 60,
-          opacity: 0,
-          duration: 0.8,
-          delay: i * 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: card,
-            start: 'top 85%',
-            toggleActions: 'play none none none',
-          },
-        });
+    const ctx = gsap.context(() => {
+      gsap.to(expoImgRef.current, {
+        yPercent: -8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '#why-voyant',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        },
       });
     });
 
     return () => ctx.revert();
   }, []);
 
-  // --- MOUSE TRACKING FOR CARD GLOWS & SHOWCASE SPOTLIGHT ---
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      document.querySelectorAll<HTMLElement>('.value-card, .agent-card').forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
-      });
-      document.querySelectorAll<HTMLElement>('.showcase-img-container').forEach(container => {
-        const rect = container.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        container.style.setProperty('--spotlight-x', `${x}%`);
-        container.style.setProperty('--spotlight-y', `${y}%`);
-      });
-      document.querySelectorAll<HTMLElement>('.bento-card').forEach(card => {
-        const rect = card.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mouse-x', `${x}%`);
-        card.style.setProperty('--mouse-y', `${y}%`);
-      });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
-
   return (
     <>
-      {!loaded && <LoadingScreen onComplete={() => setLoaded(true)} />}
-      <CustomCursor />
-      <div className="vignette-overlay" aria-hidden="true"></div>
-      <AnimatedGridBackground />
-      <div className="ambient-glow-container" aria-hidden="true">
-        <div className="ambient-orb ambient-orb-1"></div>
-        <div className="ambient-orb ambient-orb-2"></div>
-        <div className="ambient-orb ambient-orb-3"></div>
-      </div>
-      <ParticleCanvas />
-      <MouseSpotlight />
-      <ScrollProgress />
+      {/* Skip link for accessibility */}
+      <a href="#main-content" className="skip-link">Skip to main content</a>
+
       <Header />
 
-      <SmoothScroll>
-      <main>
-        {/* HERO SECTION WITH TELEMETRY DASHBOARD */}
+      <main id="main-content">
+        {/* ── HERO ── */}
         <Hero
           pmCapture={pmCapture}
           exhaustTemp={exhaustTemp}
@@ -425,115 +360,103 @@ function App() {
           logs={logs}
         />
 
-        <MarqueeStrip />
+        {/* ── OUTCOME NUMBERS STRIP ── */}
+        <section className="outcomes-strip" id="stats-section" aria-label="Key outcomes">
+          <div className="container outcomes-grid">
+            {[
+              { number: '84.5%', label: 'Average PM Capture Rate', tag: 'PM_EFFICIENCY' },
+              { number: '4 hr', label: 'Typical on-site installation', tag: 'INSTALL_TIME' },
+              { number: '24/7', label: 'Autonomous compliance monitoring', tag: 'UPTIME_COVERAGE' },
+              { number: '100%', label: 'CPCB-certified filter media', tag: 'CERTIFICATION' },
+            ].map((item, i) => (
+              <div key={i} className="outcome-item" data-reveal style={{ transitionDelay: `${i * 0.08}s` }} id={`outcome-${i}`}>
+                <div className="outcome-number">{item.number}</div>
+                <div className="outcome-label">{item.label}</div>
+                <div className="outcome-tag">{item.tag}</div>
+              </div>
+            ))}
+          </div>
+        </section>
 
-        {/* STATS SECTION */}
-        <section className="stats" id="stats-section">
-          <div className="container stats-grid">
-            <div className="stat-item fade-in-up stagger-1" id="stat-latency">
-              <div className="stat-number">01</div>
-              <div className="stat-label">Floor Audit &amp; Design</div>
+        {/* ── SOLUTIONS — EDITORIAL NUMBERED LIST ── */}
+        <section className="section editorial-section" id="solutions">
+          <div className="container">
+            <div className="editorial-header" data-reveal>
+              <span className="section-tag">RETROFIT_SOLUTIONS</span>
+              <h2 className="editorial-title">
+                Practical CPCB compliance<br />for diesel generator sets
+              </h2>
             </div>
-            <div className="stat-item fade-in-up stagger-2" id="stat-uptime">
-              <div className="stat-number">02</div>
-              <div className="stat-label">RECD Placement</div>
-            </div>
-            <div className="stat-item fade-in-up stagger-3" id="stat-deployments">
-              <div className="stat-number">03</div>
-              <div className="stat-label">Sensors &amp; Edge wiring</div>
-            </div>
-            <div className="stat-item fade-in-up stagger-4" id="stat-savings">
-              <div className="stat-number">04</div>
-              <div className="stat-label">Live Cloud Reporting</div>
+
+            <div className="editorial-list">
+              {[
+                {
+                  num: '01',
+                  tag: '[HARDWARE]',
+                  title: 'Plug-and-Play RECD Filters',
+                  desc: 'Certified emission control devices retrofit onto existing DG sets without engine modification. Captures >70% of particulate matter at all load conditions.',
+                  icon: <Wrench size={16} />,
+                },
+                {
+                  num: '02',
+                  tag: '[FIRMWARE]',
+                  title: 'Edge Gateway & On-Device AI',
+                  desc: 'A ruggedised edge controller reads Modbus registers at 250ms intervals. The on-device AI agent autonomously detects anomalies and initiates thermal regeneration cycles.',
+                  icon: <Cpu size={16} />,
+                },
+                {
+                  num: '03',
+                  tag: '[CLOUD]',
+                  title: 'Cloud Compliance Analytics',
+                  desc: 'Telemetry streams to a secure MQTT broker in real time. Compliance certificates are generated automatically — ready for CPCB audit without manual data entry.',
+                  icon: <Cloud size={16} />,
+                },
+                {
+                  num: '04',
+                  tag: '[MONITORING]',
+                  title: 'Live Dashboards & Auto-Certificates',
+                  desc: 'The SaaS portal delivers live PM capture rates, exhaust temperatures, and differential pressure with instant spike alerts and exportable CPCB audit trails.',
+                  icon: <Activity size={16} />,
+                },
+                {
+                  num: '05',
+                  tag: '[COMPLIANCE]',
+                  title: 'Edge Guardrails & Failover',
+                  desc: 'Redundant sensor channels and self-healing logic keep compliance data flowing even through hardware failures — auto-rerouting to backup channels and logging every event.',
+                  icon: <Shield size={16} />,
+                },
+              ].map((item, i) => (
+                <div key={i} className="editorial-list-item" data-reveal style={{ transitionDelay: `${i * 0.06}s` }}>
+                  <div className="eli-num">{item.num}</div>
+                  <div className="eli-body">
+                    <h3 className="eli-title">{item.title}</h3>
+                    <p className="eli-desc">{item.desc}</p>
+                  </div>
+                  <div className="eli-tag">{item.tag}</div>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
-        <SectionDivider />
-
-        {/* SOLUTIONS SECTION - Bento Grid */}
-        <section className="section" id="solutions">
+        {/* ── AI COMPLIANCE AGENT SIMULATOR ── */}
+        <section className="agent-frame" id="agent-context">
           <div className="container">
-            <div className="section-header fade-in-up">
-              <span className="section-tag">Retrofit Solutions</span>
-              <h2 className="section-title">
-                Practical CPCB compliance for diesel generators
+            <div className="agent-frame-header" data-reveal>
+              <span className="section-tag">AUTONOMOUS_INTELLIGENCE</span>
+              <h2 className="editorial-title">
+                What happens when your filter<br />clogs at 3am?
               </h2>
-              <p className="section-desc">
-                Voyant Systems installs plug-and-play retrofit RECD filters and edge gateway controllers that help you meet environmental norms without replacing expensive generator assets.
+              <p className="agent-frame-desc">
+                There's no technician on-site. The Voyant edge agent detects
+                rising backpressure, initiates a thermal regeneration cycle,
+                and logs the full recovery — before your CPCB audit trail is
+                ever touched. Run the simulation below.
               </p>
             </div>
-
-            <div className="bento-grid">
-              <SpotlightCard className="bento-card bento-wide" size={350}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Wrench size={22} /></div>
-                  <h3 className="bento-title">Plug-and-Play RECDs</h3>
-                  <p className="bento-desc">Easily retrofit legacy diesel generator (DG) sets with CPCB-approved emission control filters to capture particulate matter without degrading engine efficiency.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card" size={250}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Activity size={22} /></div>
-                  <h3 className="bento-title">AI SaaS Portal</h3>
-                  <p className="bento-desc">Live edge telemetry dashboards with automated compliance certificates.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card" size={250}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Shield size={22} /></div>
-                  <h3 className="bento-title">Edge Guardrails</h3>
-                  <p className="bento-desc">On-device AI diagnostics with autonomous thermal regenerations.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card" size={250}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Cpu size={22} /></div>
-                  <h3 className="bento-title">Edge Computing</h3>
-                  <p className="bento-desc">Sub-second interval sampling with local buffering for data gaps.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card bento-wide" size={350}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Cloud size={22} /></div>
-                  <h3 className="bento-title">Cloud Compliance Analytics</h3>
-                  <p className="bento-desc">Secure MQTT broker aggregates telemetry streams, feeding compliance reporting with instant backpressure spike alerts and automated CPCB audit trails.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card" size={250}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><Gauge size={22} /></div>
-                  <h3 className="bento-title">Live Monitoring</h3>
-                  <p className="bento-desc">Real-time PM capture, exhaust temp, and differential pressure.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-
-              <SpotlightCard className="bento-card" size={250}>
-                <div className="bento-card-content">
-                  <div className="bento-icon-wrapper"><FileCheck size={22} /></div>
-                  <h3 className="bento-title">Auto Certificates</h3>
-                  <p className="bento-desc">Generate compliance certificates automatically from live data.</p>
-                </div>
-                <div className="bento-card-border" />
-              </SpotlightCard>
-            </div>
           </div>
         </section>
 
-        <SectionDivider />
-
-        {/* AI COMPLIANCE AGENT SIMULATOR SHOWCASE */}
         <AIAgentSimulator
           agentState={agentState}
           reactSteps={reactSteps}
@@ -545,10 +468,10 @@ function App() {
           onClearFault={clearActiveFault}
         />
 
-        {/* SYSTEM ARCHITECTURE SECTION (SVG ILLUSTRATION) */}
+        {/* ── SYSTEM ARCHITECTURE ── */}
         <SystemArchitecture />
 
-        {/* EDGE PARAMETERS & CONFIG EDITOR SECTION */}
+        {/* ── EDGE PARAMETERS & CONFIG ── */}
         <Capabilities
           cloudSync={cloudSync}
           vibrationLoop={vibrationLoop}
@@ -559,70 +482,109 @@ function App() {
           onChangeSamplingRate={handleChangeSamplingRate}
         />
 
-        <SectionDivider />
-
-        {/* EXHIBITION SHOWCASE & LOCAL EXPERTISE SECTION */}
-        <section className="section" id="why-voyant">
-          <div className="container showcase-grid">
-            <div className="showcase-img-container fade-in-left" id="showcase-visual">
-              <img src="/voyant_expo_booth.png" alt="Voyant Systems Display Setup TLC Expo 2026 Chinchwad Pune" className="showcase-img" />
-              <div className="showcase-overlay">
-                <span className="showcase-tag">Exhibition Showcase</span>
-                <div className="showcase-location">TLC Expo 2026, Auto Cluster Exhibition Centre, Chinchwad</div>
-              </div>
+        {/* ── EXPO SHOWCASE — FULL BLEED ── */}
+        <section className="expo-section" id="why-voyant">
+          <div className="expo-image-col">
+            <div className="expo-image-mask">
+              <img
+                ref={expoImgRef}
+                src="/voyant_expo_booth.png"
+                alt="Voyant Systems RECD display at TLC Expo 2026, Auto Cluster Exhibition Centre, Chinchwad, Pune"
+                className="expo-img"
+                width={1024}
+                height={1024}
+                loading="lazy"
+              />
             </div>
+            <div className="expo-badge">
+              <span className="expo-badge-dot" />
+              Exhibition Showcase
+            </div>
+          </div>
 
-            <div className="showcase-text fade-in-right">
-              <span className="section-tag">Pune-Chinchwad Engineering</span>
-              <h2 className="section-title">
-                Designed for industrial manufacturing hubs
-              </h2>
-
-              <blockquote className="showcase-quote">
-                Proudly displayed at TLC Expo 2026 and COEP Pune Startup Fest &apos;26.
-              </blockquote>
-
-              <p>
-                Voyant Systems develops physical emission telemetry filters in Pune, India, serving the dense auto-manufacturing belts of Chinchwad, Bhosari, and Talegaon.
-              </p>
-              <p>
-                Our engineering covers the full stack: from mechanical pipe routing and thermal sensor placements to embedded edge firmware design and on-device compliance routines.
-              </p>
+          <div className="expo-copy-col" data-reveal>
+            <span className="section-tag">PUNE-CHINCHWAD ENGINEERING</span>
+            <h2 className="expo-headline">
+              Designed for India's industrial manufacturing hubs.
+            </h2>
+            <blockquote className="expo-quote">
+              "Proudly displayed at TLC Expo 2026 and COEP Pune Startup Fest '26."
+            </blockquote>
+            <p className="expo-body">
+              Voyant Systems develops physical emission telemetry filters in
+              Pune, serving the dense auto-manufacturing belts of Chinchwad,
+              Bhosari, and Talegaon.
+            </p>
+            <p className="expo-body">
+              Our engineering covers the full stack: mechanical pipe routing,
+              thermal sensor placement, embedded edge firmware, and on-device
+              compliance routines.
+            </p>
+            <div className="expo-meta">
+              <span>TLC Expo 2026</span>
+              <span className="expo-meta-sep">·</span>
+              <span>Auto Cluster Exhibition Centre, Chinchwad</span>
             </div>
           </div>
         </section>
 
-        {/* CONTACT / CTA SECTION */}
-        <section className="cta" id="contact">
-          <div className="container">
-            <SpotlightCard className="cta-box fade-in-up" id="cta-card" size={500}>
-              <div className="cta-content">
-                <h2 className="cta-title">Need a CPCB emission retrofit setup?</h2>
-                <p className="cta-subtitle">
-                  Provide your generator model, rating, and site specifications. Our Pune engineering team will map a custom plug-and-play compliance approach.
-                </p>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
-                  <MagneticButton href="mailto:contact@voyantsystems.com" className="btn btn-primary btn-shine" id="btn-cta-connect" style={{ fontSize: '1.05rem', padding: '0.9rem 2.2rem' }}>
-                    Contact Voyant Systems
-                    <Mail size={16} style={{ marginLeft: '0.25rem' }} />
-                  </MagneticButton>
-                  <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.82rem', color: 'var(--accent-cyan)', letterSpacing: '0.05em' }}>
-                    ROC - PUNE, MH / ESTABLISHED 2023
-                  </span>
+        {/* ── CTA — CONTACT ── */}
+        <section className="contact-section" id="contact">
+          <div className="container contact-grid">
+            <div className="contact-left" data-reveal>
+              <span className="section-tag">GET_IN_TOUCH</span>
+              <h2 className="contact-headline">
+                Running a DG set?<br />
+                Let's check compliance.
+              </h2>
+              <p className="contact-body">
+                Provide your generator model, rating, and site location. Our
+                Pune engineering team will map a custom plug-and-play
+                compliance approach — typically scoped within 48 hours.
+              </p>
+              <div className="contact-credentials">
+                <div className="cred-item">
+                  <span className="cred-label">CIN</span>
+                  <span className="cred-value">U62013PN2023PTC225117</span>
+                </div>
+                <div className="cred-item">
+                  <span className="cred-label">Registered</span>
+                  <span className="cred-value">ROC-Pune, Maharashtra</span>
+                </div>
+                <div className="cred-item">
+                  <span className="cred-label">Est.</span>
+                  <span className="cred-value">2023</span>
                 </div>
               </div>
-              <div className="bento-card-border" />
-            </SpotlightCard>
+            </div>
+
+            <div className="contact-right" data-reveal style={{ transitionDelay: '0.15s' }}>
+              <a
+                href="mailto:contact@voyantsystems.com"
+                className="contact-email-link"
+                id="btn-cta-connect"
+                aria-label="Email Voyant Systems"
+              >
+                <span className="contact-email-label">Write to us</span>
+                <span className="contact-email-address">
+                  contact@voyantsystems.com
+                </span>
+                <ArrowUpRight size={24} className="contact-email-icon" />
+              </a>
+              <div className="contact-icons-row">
+                <div className="contact-icon-chip"><Gauge size={14} /> Live telemetry</div>
+                <div className="contact-icon-chip"><FileCheck size={14} /> Auto certificates</div>
+                <div className="contact-icon-chip"><Mail size={14} /> 48hr scoping</div>
+              </div>
+            </div>
           </div>
         </section>
       </main>
 
       <Footer />
-      </SmoothScroll>
-
-      <BackToTop />
     </>
   );
 }
 
 export default App;
+

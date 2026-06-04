@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { MagneticButton } from './MagneticButton';
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -57,10 +56,10 @@ export const Header: React.FC = () => {
               </li>
             ))}
             <li>
-              <MagneticButton href="#contact" className="btn btn-secondary" id="btn-header-demo">
+              <a href="#contact" className="btn btn-secondary" id="btn-header-demo">
                 Schedule a Demo
-                <ArrowRight size={14} className="btn-icon" />
-              </MagneticButton>
+                <ArrowRight size={14} />
+              </a>
             </li>
           </ul>
         </nav>
@@ -90,10 +89,10 @@ export const Header: React.FC = () => {
               </li>
             ))}
           </ul>
-          <MagneticButton href="#contact" className="btn btn-primary btn-shine" onClick={() => setMenuOpen(false)}>
+          <a href="#contact" className="btn btn-primary" onClick={() => setMenuOpen(false)}>
             Schedule a Demo
             <ArrowRight size={16} />
-          </MagneticButton>
+          </a>
         </div>
       </div>
     </header>

@@ -1,140 +1,109 @@
 import React from 'react';
+import { Cpu, ShieldAlert, Activity, Database } from 'lucide-react';
 
 export const SystemArchitecture: React.FC = () => {
   return (
-    <section className="section" id="capabilities" style={{ background: 'rgba(5, 7, 10, 0.3)', borderBottom: '1px solid var(--border-color)' }}>
-      <div className="container architecture-grid">
-        {/* SVG Diagram Side */}
-        <div className="architecture-visual fade-in-left">
-          <svg viewBox="0 0 600 380" className="schema-svg" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="pipeGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#1e293b" />
-                <stop offset="50%" stopColor="#334155" />
-                <stop offset="100%" stopColor="#1e293b" />
-              </linearGradient>
-              <linearGradient id="recdGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stopColor="#f97316" stopOpacity="0.8" />
-                <stop offset="50%" stopColor="#c2410c" stopOpacity="0.9" />
-                <stop offset="100%" stopColor="#7c2d12" stopOpacity="0.8" />
-              </linearGradient>
-              <linearGradient id="boxGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#0f172a" />
-                <stop offset="100%" stopColor="#1e293b" />
-              </linearGradient>
-              <filter id="glow">
-                <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                <feMerge>
-                  <feMergeNode in="coloredBlur" />
-                  <feMergeNode in="SourceGraphic" />
-                </feMerge>
-              </filter>
-            </defs>
-
-            {/* Background Grid */}
-            <rect width="100%" height="100%" fill="transparent" />
-
-            {/* 1. PHYSICAL EXHAUST DUCT & RECD FILTER */}
-            {/* Inlet exhaust pipe */}
-            <path d="M 20,100 L 160,100" stroke="url(#pipeGrad)" strokeWidth="36" strokeLinecap="butt" fill="none" />
-            <text x="35" y="70" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">EXHAUST INLET</text>
-            
-            {/* Filter housing */}
-            <rect x="160" y="65" width="100" height="70" rx="8" fill="url(#recdGrad)" stroke="#ea580c" strokeWidth="2" filter="url(#glow)" />
-            <text x="210" y="105" fill="#ffffff" fontSize="12" fontWeight="800" textAnchor="middle" letterSpacing="0.05em">RECD FILTER</text>
-            <text x="210" y="120" fill="rgba(255,255,255,0.7)" fontSize="8" fontFamily="var(--font-mono)" textAnchor="middle">CATALYTIC DPF</text>
-
-            {/* Outlet exhaust pipe */}
-            <path d="M 260,100 L 400,100" stroke="url(#pipeGrad)" strokeWidth="36" fill="none" />
-            <text x="310" y="70" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">CLEAN EXHAUST</text>
-            
-            {/* Flow line animation */}
-            <path d="M 15,100 L 160,100 M 260,100 L 410,100" stroke="rgba(56, 189, 248, 0.4)" strokeWidth="3" className="svg-flow-path" fill="none" />
-            
-            {/* 2. SENSOR PROBES */}
-            {/* Temperature probe */}
-            <path d="M 110,82 L 110,65 L 130,50" stroke="#38bdf8" strokeWidth="2" fill="none" />
-            <circle cx="110" cy="85" r="3" fill="#38bdf8" />
-            <text x="135" y="48" fill="#38bdf8" fontSize="10" fontWeight="bold">Temp Probe</text>
-
-            {/* Differential Pressure taps */}
-            {/* Inlet pressure tap */}
-            <path d="M 130,118 L 130,140 L 175,185" stroke="#f97316" strokeWidth="2" strokeDasharray="3,3" fill="none" />
-            <circle cx="130" cy="118" r="3" fill="#f97316" />
-            {/* Outlet pressure tap */}
-            <path d="M 290,118 L 290,145 L 225,185" stroke="#f97316" strokeWidth="2" strokeDasharray="3,3" fill="none" />
-            <circle cx="290" cy="118" r="3" fill="#f97316" />
-            
-            <text x="250" y="160" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">DP SENSOR TAPS</text>
-
-            {/* 3. VOYANT EDGE CONTROLLER */}
-            <rect x="150" y="185" width="100" height="90" rx="8" fill="url(#boxGrad)" stroke="var(--accent-cyan)" strokeWidth="2" filter="url(#glow)" />
-            <text x="200" y="210" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">VOYANT EDGE</text>
-            <text x="200" y="222" fill="var(--accent-cyan)" fontSize="8" fontFamily="var(--font-mono)" textAnchor="middle">TELEMETRY RTU</text>
-            
-            {/* Controller indicator lights */}
-            <circle cx="175" cy="250" r="4" className="svg-led-green" fill="#22c55e" />
-            <circle cx="195" cy="250" r="4" className="svg-led-orange" fill="#f97316" />
-            <circle cx="215" cy="250" r="4" fill="#64748b" />
-            <circle cx="225" cy="250" r="2.5" fill="#64748b" />
-
-            {/* Connecting lines from probes to Edge */}
-            <path d="M 130,50 L 170,185" stroke="#38bdf8" strokeWidth="1.5" opacity="0.6" fill="none" />
-
-            {/* 4. CLOUD COMPLIANCE PORTAL */}
-            {/* Cloud Icon */}
-            <g transform="translate(420, 180)">
-              <rect x="0" y="0" width="130" height="85" rx="6" fill="#0b1329" stroke="#38bdf8" strokeWidth="1.5" />
-              <path d="M 35,45 Q 35,30 50,30 Q 55,20 70,25 Q 85,20 90,32 Q 100,32 100,45 Q 100,55 90,55 L 35,55 Z" fill="none" stroke="var(--accent-cyan)" strokeWidth="2" filter="url(#glow)" />
-              <text x="65" y="72" fill="#ffffff" fontSize="10" fontWeight="bold" textAnchor="middle">VOYANT CLOUD</text>
-            </g>
-
-            {/* 5. WIRELESS TRANSFERS (MQTT) */}
-            <g transform="translate(285, 210)">
-              {/* Wireless Wave 1 */}
-              <path d="M 10,0 A 30,30 0 0,1 40,30" className="svg-signal-wave" strokeWidth="2.5" fill="none" />
-              {/* Wireless Wave 2 */}
-              <path d="M 25,-10 A 45,45 0 0,1 70,35" className="svg-signal-wave" strokeWidth="2.5" fill="none" />
-              {/* Wireless Wave 3 */}
-              <path d="M 40,-20 A 60,60 0 0,1 100,40" className="svg-signal-wave" strokeWidth="2.5" fill="none" />
-            </g>
-            <text x="350" y="200" fill="var(--accent-cyan)" fontSize="9" fontFamily="var(--font-mono)">MQTT TELEMETRY</text>
-          </svg>
+    <section className="section" id="architecture" style={{ background: 'var(--bg)', borderTop: '1px solid var(--border-color)', borderBottom: '1px solid var(--border-color)', padding: '8rem 0' }}>
+      <div className="container" style={{ display: 'grid', gridTemplateColumns: '1fr 1.2fr', gap: '6rem', alignItems: 'start' }}>
+        
+        {/* Sticky Left Column */}
+        <div style={{ position: 'sticky', top: '120px' }}>
+          <span className="section-tag" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)', fontSize: '0.85rem' }}>
+            SYSTEM_ARCHITECTURE
+          </span>
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', lineHeight: '1.1', marginBottom: '1.5rem', fontWeight: 400 }}>
+            Edge intelligence meets deep cloud analytics.
+          </h2>
+          <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem', lineHeight: '1.6', marginBottom: '2rem', maxWidth: '420px' }}>
+            Our hardware stack samples exhaust streams at sub-second intervals, routing telemetry through a secure MQTT broker. It predicts filter clogs before they hit critical failure thresholds, ensuring 100% CPCB compliance.
+          </p>
         </div>
 
-        {/* Text Details Side */}
-        <div className="architecture-text fade-in-right">
-          <span className="section-tag">Edge-to-SaaS Architecture</span>
-          <h3>Engineered Close to the Metal</h3>
-          <p>
-            Voyant Systems integrates firmware loops, physical sensors, and cloud diagnostics directly. Our system continuously samples emission states and communicates them securely, eliminating manual compliance audits.
-          </p>
+        {/* Scrolling Right Column */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
+          
+          <div className="architecture-visual" style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-color)', padding: '2rem', borderRadius: '4px' }}>
+            <svg viewBox="0 0 600 400" className="schema-svg" xmlns="http://www.w3.org/2000/svg" style={{ display: 'block', width: '100%', height: 'auto' }}>
+              {/* Clean, editorial wireframe style */}
+              <g stroke="var(--text-muted)" strokeWidth="1" fill="none" opacity="0.6">
+                <path d="M 30,120 L 150,120" />
+                <path d="M 30,160 L 150,160" />
+                <rect x="150" y="100" width="120" height="80" />
+                <line x1="160" y1="100" x2="160" y2="180" strokeDasharray="4,4" />
+                <line x1="260" y1="100" x2="260" y2="180" strokeDasharray="4,4" />
+                <path d="M 270,120 L 400,120" />
+                <path d="M 270,160 L 400,160" />
+              </g>
+              
+              <text x="35" y="115" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">RAW_EXHAUST</text>
+              <text x="210" y="145" fill="var(--text-primary)" fontSize="12" fontFamily="var(--font-mono)" textAnchor="middle" letterSpacing="0.1em">CATALYTIC RECD</text>
+              <text x="310" y="115" fill="var(--text-muted)" fontSize="10" fontFamily="var(--font-mono)">CLEAN_OUT</text>
 
-          <ul className="architecture-list">
-            <li className="architecture-item">
-              <div className="architecture-bullet">01</div>
-              <div className="architecture-item-text">
-                <h4>Firmware & Edge Loops</h4>
-                <p>On-device controllers sample backpressure and exhaust temperatures at sub-second intervals, buffering logs locally to prevent data gaps during connectivity drops.</p>
-              </div>
-            </li>
-            <li className="architecture-item">
-              <div className="architecture-bullet">02</div>
-              <div className="architecture-item-text">
-                <h4>Sensor Integration</h4>
-                <p>Plug-and-play connections to thermocouple probes and differential pressure sensors with noise-filtering signal conditioning circuits.</p>
-              </div>
-            </li>
-            <li className="architecture-item">
-              <div className="architecture-bullet">03</div>
-              <div className="architecture-item-text">
-                <h4>Compliance SaaS Analytics</h4>
-                <p>Secure MQTT broker connection aggregates telemetry streams, feeding the compliance reporting suite and triggering instant alerts if backpressure thresholds spike.</p>
-              </div>
-            </li>
-          </ul>
+              <path d="M 20,140 L 420,140" stroke="var(--accent)" strokeWidth="1.5" strokeDasharray="6,6" fill="none" opacity="0.8" />
+              <polygon points="420,140 410,136 410,144" fill="var(--accent)" />
+
+              <g stroke="var(--accent-secondary)" strokeWidth="1" fill="none" opacity="0.9">
+                <polyline points="100,120 100,80 130,80" />
+                <circle cx="100" cy="120" r="3" fill="var(--accent-secondary)" />
+                <text x="135" y="83" fill="var(--accent-secondary)" fontSize="10" fontFamily="var(--font-mono)">PT-100</text>
+                <polyline points="130,160 130,220 180,220" />
+                <circle cx="130" cy="160" r="3" fill="var(--accent-secondary)" />
+                <polyline points="290,160 290,240 220,240" />
+                <circle cx="290" cy="160" r="3" fill="var(--accent-secondary)" />
+              </g>
+
+              <rect x="180" y="210" width="100" height="70" fill="var(--bg-console)" stroke="var(--border-color)" strokeWidth="1" />
+              <text x="185" y="225" fill="var(--text-primary)" fontSize="10" fontFamily="var(--font-mono)">VOYANT_EDGE</text>
+              <text x="185" y="235" fill="var(--text-muted)" fontSize="8" fontFamily="var(--font-mono)">SN:VY-2026</text>
+              
+              <rect x="185" y="265" width="6" height="6" fill="var(--accent-secondary)" />
+              <rect x="195" y="265" width="6" height="6" fill="var(--accent)" />
+              
+              <polyline points="280,245 340,245" stroke="var(--text-muted)" strokeWidth="1" strokeDasharray="4,4" fill="none" />
+              <polygon points="340,245 336,242 336,248" fill="var(--text-muted)" />
+
+              <g transform="translate(360, 210)" stroke="var(--border-color)" fill="none" strokeWidth="1">
+                <rect x="0" y="0" width="140" height="80" />
+                <line x1="0" y1="20" x2="140" y2="20" />
+                <text x="5" y="14" fill="var(--text-primary)" fontSize="9" fontFamily="var(--font-mono)">CLOUD_INFRA</text>
+                <ellipse cx="30" cy="45" rx="15" ry="5" />
+                <path d="M 15,45 L 15,65 A 15,5 0 0,0 45,65 L 45,45" />
+                <text x="55" y="55" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">TSDB</text>
+                <rect x="90" y="40" width="40" height="30" strokeDasharray="2,2" />
+                <text x="95" y="55" fill="var(--text-muted)" fontSize="9" fontFamily="var(--font-mono)">API</text>
+              </g>
+            </svg>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+            <div style={{ padding: '2rem', background: 'var(--bg-elevated)', border: '1px solid var(--border-color)' }}>
+              <Cpu size={24} style={{ color: 'var(--accent)', marginBottom: '1.5rem' }} />
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', fontWeight: 600, fontFamily: 'var(--font-sans)' }}>Real-Time Edge</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Sub-second sampling intervals on local controllers ensure instant thermal interventions.</p>
+            </div>
+            
+            <div style={{ padding: '2rem', background: 'var(--bg-elevated)', border: '1px solid var(--border-color)' }}>
+              <ShieldAlert size={24} style={{ color: 'var(--accent-secondary)', marginBottom: '1.5rem' }} />
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', fontWeight: 600, fontFamily: 'var(--font-sans)' }}>Fail-Safe Loop</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Automated MQTT aggregation triggers instant alerts if a filter is bypassed.</p>
+            </div>
+
+            <div style={{ padding: '2rem', background: 'var(--bg-elevated)', border: '1px solid var(--border-color)' }}>
+              <Activity size={24} style={{ color: 'var(--text-primary)', marginBottom: '1.5rem' }} />
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', fontWeight: 600, fontFamily: 'var(--font-sans)' }}>Predictive ML</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Time-series analysis foresees DPF clogging paths before engine stalling occurs.</p>
+            </div>
+
+            <div style={{ padding: '2rem', background: 'var(--bg-elevated)', border: '1px solid var(--border-color)' }}>
+              <Database size={24} style={{ color: 'var(--text-muted)', marginBottom: '1.5rem' }} />
+              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.75rem', fontWeight: 600, fontFamily: 'var(--font-sans)' }}>Data Vault</h3>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>Immutable logs verify CPCB certification audits effortlessly across the region.</p>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
   );
 };
+

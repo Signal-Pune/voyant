@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Brain, AlertOctagon, RefreshCw, Layers } from 'lucide-react';
 
 export interface ReActStep {
@@ -28,8 +28,6 @@ export const AIAgentSimulator: React.FC<AIAgentSimulatorProps> = ({
   onClearFault,
 }) => {
   const terminalEndRef = useRef<HTMLDivElement>(null);
-  const [flashClogging, setFlashClogging] = useState(false);
-  const [flashDropout, setFlashDropout] = useState(false);
 
   useEffect(() => {
     if (terminalEndRef.current) {
@@ -37,169 +35,147 @@ export const AIAgentSimulator: React.FC<AIAgentSimulatorProps> = ({
     }
   }, [reactSteps]);
 
-  // Map state to CSS classes
-  const getBadgeClass = (state: string) => {
+  const getBadgeColor = (state: string) => {
     switch (state) {
       case 'Idle':
-        return 'status-idle';
+        return 'var(--text-muted)';
       case 'Analyzing':
       case 'Recovering':
-        return 'status-active';
+        return 'var(--accent)';
       case 'Executing Regeneration':
-        return 'status-warning';
+        return '#f97316';
       case 'Diagnosing Error':
       case 'Re-routing':
-        return 'status-danger';
+        return '#ff3366';
       default:
-        return 'status-idle';
+        return 'var(--text-muted)';
     }
   };
 
   return (
-    <section className="section" id="ai-agent-simulator" style={{ borderBottom: '1px solid var(--border-color)' }}>
+    <section className="section" id="ai-agent-simulator" style={{ padding: '8rem 0', background: 'var(--bg)' }}>
       <div className="container">
-        <div className="section-header fade-in-up">
-          <span className="section-tag">Autonomous Edge Intelligence</span>
-          <h2 className="section-title">
-            Live AI Compliance Agent Simulator
+        <div className="section-header" style={{ textAlign: 'left', marginLeft: 0 }}>
+          <span className="section-tag" style={{ color: 'var(--accent)', fontFamily: 'var(--font-mono)' }}>AGENT_SIMULATION</span>
+          <h2 className="section-title" style={{ fontWeight: 400 }}>
+            Live Autonomy Loop
           </h2>
-          <p className="section-desc">
-            Observe the on-device AI agent continuously auditing diesel exhaust backpressure and PM capture efficiency. When faults are injected, the agent automatically executes a ReAct reasoning loop (Thought &rarr; Action &rarr; Observation) to recover compliance.
+          <p className="section-desc" style={{ maxWidth: '600px' }}>
+            Observe the on-device AI executing a rigorous ReAct loop (Thought &rarr; Action &rarr; Observation) to mitigate injected hardware faults dynamically.
           </p>
         </div>
 
-        <div className="agent-simulator-grid fade-in-up stagger-2">
-          {/* ReAct Console Box */}
-          <div className="agent-console-box">
-            <div className="agent-console-header">
-              <div className="agent-console-title">
-                <Brain size={16} className="text-accent-cyan" />
-                VOYANT-RECD-AGENT-CORE v1.2.0
+        <div style={{ display: 'grid', gridTemplateColumns: '1.4fr 1fr', gap: '2rem' }}>
+          
+          {/* Strict Terminal Window */}
+          <div style={{ background: 'var(--bg-console)', border: '1px solid var(--border-color)', borderRadius: '4px', overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+            <div style={{ background: 'var(--bg-elevated)', borderBottom: '1px solid var(--border-color)', padding: '1rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Brain size={14} style={{ color: 'var(--accent)' }} />
+                AGENT_CORE v1.2.0
               </div>
-              <div className={`agent-status-badge ${getBadgeClass(agentState)}`}>
-                <span className="telemetry-live-dot" style={{
-                  background: agentState === 'Idle' ? '#94a3b8' : agentState === 'Executing Regeneration' ? '#f97316' : agentState === 'Diagnosing Error' ? '#ff3366' : '#22c55e'
-                }}></span>
-                Agent: {agentState}
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', color: getBadgeColor(agentState), display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <span style={{ display: 'block', width: '6px', height: '6px', borderRadius: '50%', background: getBadgeColor(agentState) }}></span>
+                STATE: {agentState.toUpperCase()}
               </div>
             </div>
 
-            <div className="agent-console-body">
+            <div style={{ padding: '1.5rem', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: 'var(--text-primary)', flex: 1, overflowY: 'auto', maxHeight: '400px' }}>
               {reactSteps.map((step, idx) => (
-                <div key={idx} className={`console-line ${step.type === 'thought' ? 'agent-thought' : step.type === 'action' ? 'agent-action' : 'agent-observation'}`}>
-                  {step.type === 'thought' && (
-                    <>
-                      <span>[THOUGHT]</span> {step.content}
-                    </>
-                  )}
-                  {step.type === 'action' && (
-                    <>
-                      <span>[ACTION]</span> {step.content}
-                    </>
-                  )}
-                  {step.type === 'observation' && (
-                    <>
-                      <span>[OBSERVATION]</span> {step.content}
-                    </>
-                  )}
+                <div key={idx} style={{ marginBottom: '1rem', lineHeight: '1.6' }}>
+                  <span style={{ 
+                    color: step.type === 'thought' ? 'var(--text-muted)' : step.type === 'action' ? 'var(--accent)' : 'var(--accent-secondary)',
+                    marginRight: '0.5rem',
+                    fontWeight: 600
+                  }}>
+                    [{step.type.toUpperCase()}]
+                  </span>
+                  <span style={{ color: step.type === 'thought' ? 'var(--text-secondary)' : 'var(--text-primary)' }}>
+                    {step.content}
+                  </span>
                 </div>
               ))}
               <div ref={terminalEndRef} />
             </div>
           </div>
 
-          {/* Sidebar / Memory Slots & Fault Toggles */}
-          <div className="agent-simulator-sidebar">
-            {/* Memory Board */}
-            <div className="agent-card">
-              <div className="agent-card-title">
-                <Layers size={14} className="inline-icon" style={{ marginRight: '0.5rem', color: 'var(--accent-orange)' }} />
-                Hierarchical Memory Layout
+          {/* Memory & Injector Stack */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+            
+            <div style={{ background: 'var(--bg-elevated)', border: '1px solid var(--border-color)', borderRadius: '4px', padding: '1.5rem' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <Layers size={14} /> MEMORY_HIERARCHY
               </div>
               
-              <div className="memory-slot">
-                <span className="memory-label">Working Memory (Task Goal)</span>
-                <div className="memory-value-box text-gradient-cyan">
-                  {workingMemory}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>WORKING_MEMORY</div>
+                <div style={{ fontFamily: 'var(--font-sans)', fontSize: '0.95rem', color: 'var(--accent)' }}>{workingMemory}</div>
+              </div>
+
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>SEMANTIC_MEMORY</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  {semanticMemory.map((rule, idx) => (
+                    <div key={idx} style={{ paddingBottom: '0.2rem', marginBottom: '0.2rem' }}>&bull; {rule}</div>
+                  ))}
                 </div>
               </div>
 
-              <div className="memory-slot">
-                <span className="memory-label">Semantic Memory (Rules Engine)</span>
-                <div className="memory-value-box">
-                  <ul style={{ paddingLeft: '1rem', margin: 0, fontSize: '0.78rem' }}>
-                    {semanticMemory.map((rule, idx) => (
-                      <li key={idx} style={{ marginBottom: '0.25rem' }}>{rule}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-
-              <div className="memory-slot">
-                <span className="memory-label">Episodic Memory (Last Events)</span>
-                <div className="memory-value-box" style={{ fontSize: '0.76rem', color: 'var(--text-muted)' }}>
-                  {episodicMemory.map((event, idx) => (
-                    <div key={idx} style={{ borderBottom: idx < episodicMemory.length - 1 ? '1px solid rgba(255,255,255,0.03)' : 'none', padding: '0.2rem 0' }}>
-                      &bull; {event}
-                    </div>
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>EPISODIC_LOGS</div>
+                <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
+                  {episodicMemory.map((evt, i) => (
+                    <div key={i} style={{ paddingBottom: '0.4rem', borderBottom: i < episodicMemory.length -1 ? '1px solid rgba(255,255,255,0.05)' : 'none', marginBottom: '0.4rem' }}>&gt; {evt}</div>
                   ))}
                 </div>
               </div>
             </div>
 
-            {/* Fault Injector Panel */}
-            <div className="agent-card" style={{ borderColor: activeFault !== 'none' ? 'var(--accent-red)' : 'var(--border-color)' }}>
-              <div className="agent-card-title" style={{ color: activeFault !== 'none' ? 'var(--accent-red)' : 'var(--text-primary)' }}>
-                <AlertOctagon size={14} className="inline-icon" style={{ marginRight: '0.5rem' }} />
-                Fault Injection Panel
+            <div style={{ background: 'var(--bg-elevated)', border: `1px solid ${activeFault !== 'none' ? '#ff3366' : 'var(--border-color)'}`, borderRadius: '4px', padding: '1.5rem' }}>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: activeFault !== 'none' ? '#ff3366' : 'var(--text-muted)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <AlertOctagon size={14} /> FAULT_INJECTION_UNIT
               </div>
               
-              <div className="fault-btn-group">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 <button
-                  className={`fault-btn ${activeFault === 'clogging' ? 'active' : ''} ${flashClogging ? 'flash' : ''}`}
-                  onClick={() => {
-                    if (activeFault === 'clogging') {
-                      onClearFault();
-                    } else {
-                      setFlashClogging(true);
-                      setTimeout(() => setFlashClogging(false), 300);
-                      onInjectFault('clogging');
-                    }
-                  }}
+                  onClick={() => activeFault === 'clogging' ? onClearFault() : onInjectFault('clogging')}
                   disabled={activeFault === 'dropout'}
+                  style={{ 
+                    background: activeFault === 'clogging' ? 'var(--accent-dim)' : 'transparent',
+                    border: `1px solid ${activeFault === 'clogging' ? 'var(--accent)' : 'var(--border-color)'}`,
+                    color: activeFault === 'clogging' ? 'var(--accent)' : 'var(--text-primary)',
+                    padding: '0.8rem', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', cursor: activeFault === 'dropout' ? 'not-allowed' : 'pointer',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: '4px'
+                  }}
                 >
-                  <span>Inject Filter Clogging</span>
-                  <RefreshCw size={14} className={activeFault === 'clogging' ? 'animate-spin' : ''} />
+                  [ INJECT DPF CLOG ] <RefreshCw size={14} className={activeFault === 'clogging' ? 'animate-spin' : ''} />
                 </button>
 
                 <button
-                  className={`fault-btn ${activeFault === 'dropout' ? 'active' : ''} ${flashDropout ? 'flash' : ''}`}
-                  onClick={() => {
-                    if (activeFault === 'dropout') {
-                      onClearFault();
-                    } else {
-                      setFlashDropout(true);
-                      setTimeout(() => setFlashDropout(false), 300);
-                      onInjectFault('dropout');
-                    }
-                  }}
+                  onClick={() => activeFault === 'dropout' ? onClearFault() : onInjectFault('dropout')}
                   disabled={activeFault === 'clogging'}
+                  style={{ 
+                    background: activeFault === 'dropout' ? 'rgba(255,51,102,0.1)' : 'transparent',
+                    border: `1px solid ${activeFault === 'dropout' ? '#ff3366' : 'var(--border-color)'}`,
+                    color: activeFault === 'dropout' ? '#ff3366' : 'var(--text-primary)',
+                    padding: '0.8rem', fontFamily: 'var(--font-mono)', fontSize: '0.85rem', cursor: activeFault === 'clogging' ? 'not-allowed' : 'pointer',
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderRadius: '4px'
+                  }}
                 >
-                  <span>Simulate Sensor Dropout</span>
-                  <AlertOctagon size={14} />
+                  [ DROP TEMP SENSOR ] <AlertOctagon size={14} />
                 </button>
-                
+
                 {activeFault !== 'none' && (
                   <button
-                    className="btn btn-secondary"
                     onClick={onClearFault}
-                    style={{ fontSize: '0.8rem', padding: '0.5rem 1rem', marginTop: '0.5rem', borderColor: 'var(--text-muted)' }}
+                    style={{ background: 'var(--text-primary)', color: 'var(--bg)', border: 'none', padding: '0.6rem', fontFamily: 'var(--font-mono)', fontSize: '0.75rem', cursor: 'pointer', borderRadius: '4px', marginTop: '0.5rem' }}
                   >
-                    Clear Active Fault & Reset Agent
+                    RESET_SYSTEM
                   </button>
                 )}
               </div>
             </div>
+
           </div>
         </div>
       </div>

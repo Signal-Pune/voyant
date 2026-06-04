@@ -30,157 +30,167 @@ export const TelemetryPanel: React.FC<TelemetryProps> = ({
   }, [logs]);
 
   // Compute fill widths
-  // PM Capture scale between 70% and 95%
   const pmWidth = Math.min(100, Math.max(0, ((pmCapture - 70) / (95 - 70)) * 100));
-  // Temp scale between 40 and 400 deg C (or higher for regen)
   const maxTempScale = recdStatus === 'Regenerating' ? 550 : 400;
   const tempWidth = Math.min(100, Math.max(0, ((exhaustTemp - 40) / (maxTempScale - 40)) * 100));
-  // DP scale between 0 and 8 kPa
   const dpWidth = Math.min(100, Math.max(0, (diffPressure / 8) * 100));
-  // Compliance status fill width
   const complianceWidth = cpcbStatus === 'CPCB OK' ? 100 : cpcbStatus === 'WARNING' ? 50 : 25;
 
   const showFailover = cpcbStatus === 'WARNING' || cpcbStatus === 'CRITICAL';
 
   return (
     <div
-      className={`telemetry-card ${isCompact ? 'compact-telemetry' : ''}`}
+      style={{
+        background: 'var(--bg-elevated)',
+        border: '1px solid var(--border-color)',
+        borderRadius: '4px',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        boxShadow: '0 4px 20px rgba(0,0,0,0.5)'
+      }}
       id={isCompact ? 'telemetry-dashboard-compact' : 'telemetry-dashboard'}
     >
-      {/* Mobbin-inspired floating warning banner */}
+      {/* Banner */}
       {showFailover && (
-        <div className="telemetry-alert-banner">
-          <AlertTriangle size={14} style={{ flexShrink: 0 }} />
+        <div style={{
+          background: 'rgba(255, 51, 102, 0.1)',
+          borderBottom: '1px solid #ff3366',
+          padding: '0.75rem 1.5rem',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '0.75rem',
+          color: '#ff3366',
+          fontFamily: 'var(--font-mono)',
+          fontSize: '0.75rem'
+        }}>
+          <AlertTriangle size={14} style={{ flexShrink: 0, marginTop: '2px' }} />
           <div>
-            <strong>SENSOR FAILOVER TO PIN 12 ACTIVE</strong>
-            <span>Primary thermocouple open-circuit code ERR-TEMP-01. Re-routed to redundant channel.</span>
+            <strong style={{ display: 'block', marginBottom: '0.2rem' }}>SENSOR FAILOVER TO PIN 12 ACTIVE</strong>
+            <span style={{ color: 'var(--text-secondary)' }}>Primary thermocouple open-circuit code ERR-TEMP-01. Re-routed to redundant channel.</span>
           </div>
         </div>
       )}
 
-      <div className="telemetry-header">
-        <div className="telemetry-title">
-          <span className="telemetry-live-dot"></span>
-          <Zap size={14} style={{ color: 'var(--accent-cyan)', marginRight: '0.35rem' }} />
-          RECD Live Telemetry
+      {/* Header */}
+      <div style={{
+        padding: '1rem 1.5rem',
+        borderBottom: '1px solid var(--border-color)',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        background: 'var(--bg)'
+      }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', color: 'var(--text-primary)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <span style={{ display: 'block', width: '6px', height: '6px', borderRadius: '50%', background: 'var(--accent)' }}></span>
+          <Zap size={14} style={{ color: 'var(--accent)' }} />
+          RECD_TELEMETRY_LINK
         </div>
-        <div className="node-selector" id="telemetry-node-id">
-          Node-RECD-02 (Pune-Chinchwad)
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+          NODE_RECD_02 // PUNE
         </div>
       </div>
 
-      <div className="telemetry-grid">
-        {/* Metric 1: PM Capture Rate */}
-        <div className="telemetry-metric metric-green" id="metric-pm">
-          <div className="metric-top-row">
-            <CircularProgress
-              value={pmCapture}
-              max={100}
-              size={44}
-              strokeWidth={3}
-              color="var(--accent-green)"
-            >
-              <CheckCircle2 size={16} style={{ color: 'var(--accent-green)' }} />
+      {/* Grid */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+        borderBottom: '1px solid var(--border-color)'
+      }}>
+        
+        {/* Metric 1 */}
+        <div style={{ padding: '1.5rem', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <CircularProgress value={pmCapture} max={100} size={44} strokeWidth={3} color="var(--accent)">
+              <CheckCircle2 size={16} style={{ color: 'var(--accent)' }} />
             </CircularProgress>
-            <div className="metric-value-block">
-              <div className="metric-label">PM Capture Rate</div>
-              <div className="metric-value" id="pm-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
-                {pmCapture.toFixed(1)}
-                <span className="metric-unit">%</span>
+            <div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>PM_CAPTURE</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', color: 'var(--text-primary)' }}>
+                {pmCapture.toFixed(1)}<span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: '2px' }}>%</span>
               </div>
             </div>
           </div>
-          <div className="metric-sparkline">
-            <div className="metric-sparkline-fill" id="pm-fill" style={{ width: `${pmWidth}%` }}></div>
+          <div style={{ height: '2px', background: 'var(--bg)', width: '100%' }}>
+            <div style={{ height: '100%', background: 'var(--accent)', width: `${pmWidth}%`, transition: 'width 0.5s ease' }}></div>
           </div>
         </div>
 
-        {/* Metric 2: Exhaust Gas Temperature */}
-        <div className="telemetry-metric metric-orange" id="metric-temp">
-          <div className="metric-top-row">
-            <CircularProgress
-              value={exhaustTemp}
-              max={maxTempScale}
-              size={44}
-              strokeWidth={3}
-              color="var(--accent-orange)"
-            >
-              <Thermometer size={16} style={{ color: 'var(--accent-orange)' }} />
+        {/* Metric 2 */}
+        <div style={{ padding: '1.5rem', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <CircularProgress value={exhaustTemp} max={maxTempScale} size={44} strokeWidth={3} color="#f97316">
+              <Thermometer size={16} style={{ color: '#f97316' }} />
             </CircularProgress>
-            <div className="metric-value-block">
-              <div className="metric-label">Exhaust Gas Temp</div>
-              <div className="metric-value" id="temp-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
-                {exhaustTemp.toFixed(1)}
-                <span className="metric-unit"> °C</span>
+            <div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>EXHAUST_TEMP</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', color: 'var(--text-primary)' }}>
+                {exhaustTemp.toFixed(1)}<span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: '2px' }}>°C</span>
               </div>
             </div>
           </div>
-          <div className="metric-sparkline">
-            <div className="metric-sparkline-fill" id="temp-fill" style={{ width: `${tempWidth}%` }}></div>
+          <div style={{ height: '2px', background: 'var(--bg)', width: '100%' }}>
+            <div style={{ height: '100%', background: '#f97316', width: `${tempWidth}%`, transition: 'width 0.5s ease' }}></div>
           </div>
         </div>
 
-        {/* Metric 3: Differential Pressure */}
-        <div className="telemetry-metric" id="metric-dp">
-          <div className="metric-top-row">
-            <CircularProgress
-              value={diffPressure}
-              max={8}
-              size={44}
-              strokeWidth={3}
-              color="var(--accent-cyan)"
-            >
-              <Activity size={16} style={{ color: 'var(--accent-cyan)' }} />
+        {/* Metric 3 */}
+        <div style={{ padding: '1.5rem', borderRight: '1px solid var(--border-color)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <CircularProgress value={diffPressure} max={8} size={44} strokeWidth={3} color="var(--accent)">
+              <Activity size={16} style={{ color: 'var(--accent)' }} />
             </CircularProgress>
-            <div className="metric-value-block">
-              <div className="metric-label">Differential Pressure</div>
-              <div className="metric-value" id="dp-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
-                {diffPressure.toFixed(1)}
-                <span className="metric-unit"> kPa</span>
+            <div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>DIFF_PRESSURE</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1.25rem', color: 'var(--text-primary)' }}>
+                {diffPressure.toFixed(1)}<span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', marginLeft: '2px' }}>kPa</span>
               </div>
             </div>
           </div>
-          <div className="metric-sparkline">
-            <div className="metric-sparkline-fill" id="dp-fill" style={{ width: `${dpWidth}%` }}></div>
+          <div style={{ height: '2px', background: 'var(--bg)', width: '100%' }}>
+            <div style={{ height: '100%', background: 'var(--accent)', width: `${dpWidth}%`, transition: 'width 0.5s ease' }}></div>
           </div>
         </div>
 
-        {/* Metric 4: CPCB Compliance Status */}
-        <div className={`telemetry-metric ${cpcbStatus === 'CPCB OK' ? 'metric-green' : cpcbStatus === 'WARNING' ? 'metric-orange' : 'metric-orange'}`} id="metric-compliance">
-          <div className="metric-top-row">
-            <CircularProgress
-              value={complianceWidth}
-              max={100}
-              size={44}
-              strokeWidth={3}
-              color={cpcbStatus === 'CPCB OK' ? 'var(--accent-green)' : 'var(--accent-orange)'}
-            >
-              <Cpu size={16} style={{ color: cpcbStatus === 'CPCB OK' ? 'var(--accent-green)' : 'var(--accent-orange)' }} />
+        {/* Metric 4 */}
+        <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <CircularProgress value={complianceWidth} max={100} size={44} strokeWidth={3} color={cpcbStatus === 'CPCB OK' ? 'var(--accent)' : '#ff3366'}>
+              <Cpu size={16} style={{ color: cpcbStatus === 'CPCB OK' ? 'var(--accent)' : '#ff3366' }} />
             </CircularProgress>
-            <div className="metric-value-block">
-              <div className="metric-label">CPCB Norms</div>
-              <div className="metric-value" id="compliance-val" style={{ transition: 'color 250ms cubic-bezier(0.19, 1, 0.22, 1)' }}>
+            <div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.65rem', color: 'var(--text-muted)', marginBottom: '0.25rem' }}>COMPLIANCE</div>
+              <div style={{ fontFamily: 'var(--font-mono)', fontSize: '1rem', color: cpcbStatus === 'CPCB OK' ? 'var(--text-primary)' : '#ff3366' }}>
                 {cpcbStatus}
               </div>
             </div>
           </div>
-          <div className="metric-sparkline">
-            <div className="metric-sparkline-fill" id="compliance-fill" style={{ width: `${complianceWidth}%` }}></div>
+          <div style={{ height: '2px', background: 'var(--bg)', width: '100%' }}>
+            <div style={{ height: '100%', background: cpcbStatus === 'CPCB OK' ? 'var(--accent)' : '#ff3366', width: `${complianceWidth}%`, transition: 'width 0.5s ease' }}></div>
           </div>
         </div>
+        
       </div>
 
-      {/* Stream Gateway Log Console */}
-      <div className="telemetry-console" id="log-console" ref={consoleRef}>
+      {/* Log Console */}
+      <div ref={consoleRef} style={{
+        background: 'var(--bg-console)',
+        padding: '1.5rem',
+        height: isCompact ? '150px' : '200px',
+        overflowY: 'auto',
+        fontFamily: 'var(--font-mono)',
+        fontSize: '0.75rem',
+        lineHeight: '1.6'
+      }}>
         {logs.map((log, index) => (
-          <div
-            key={index}
-            className={`console-line ${log.type === 'SYSTEM' ? 'console-system' : 'console-data'}`}
-          >
-            [{log.timestamp}] [{log.type}] {log.message}
+          <div key={index} style={{ marginBottom: '0.4rem', color: log.type === 'SYSTEM' ? 'var(--text-muted)' : 'var(--text-secondary)' }}>
+            <span style={{ color: 'var(--text-muted)', marginRight: '0.5rem' }}>[{log.timestamp}]</span>
+            <span style={{ color: log.type === 'SYSTEM' ? 'var(--accent-secondary)' : 'var(--accent)', marginRight: '0.5rem' }}>[{log.type}]</span>
+            {log.message}
           </div>
         ))}
-        <span className="console-cursor"></span>
+        <span className="console-cursor" style={{ display: 'inline-block', width: '8px', height: '12px', background: 'var(--accent)', animation: 'blink 1s step-end infinite' }}></span>
       </div>
     </div>
   );
