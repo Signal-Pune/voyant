@@ -1398,7 +1398,6 @@ footer {
   flex-direction: column;
   border: 2px solid #CF9EFF;
   border-radius: 16px;
-  overflow: hidden;
   box-shadow: 0 0 25px rgba(207, 158, 255, 0.2), 0 24px 60px -12px rgba(0, 0, 0, 0.7);
   background: var(--bg-elevated);
 }
@@ -1413,12 +1412,18 @@ footer {
   padding: 0.6rem 1rem;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-elevated);
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
 }
 .hero-panel-dot {
   display: inline-block; width: 6px; height: 6px; border-radius: 50%;
   background: #22c55e; animation: pulseGreen 1.4s infinite alternate;
 }
-.hero-panel-inner { overflow: hidden; }
+.hero-panel-inner {
+  overflow: hidden;
+  border-bottom-left-radius: 14px;
+  border-bottom-right-radius: 14px;
+}
 .hero-scroll-cue {
   position: absolute;
   bottom: 2.5rem;
