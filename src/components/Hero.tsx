@@ -1,113 +1,118 @@
-import { useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import { TelemetryPanel } from './TelemetryPanel';
 import type { TelemetryProps } from './TelemetryPanel';
 import { ArrowRight } from 'lucide-react';
-import gsap from 'gsap';
 
 interface HeroProps extends TelemetryProps {}
 
+// Animation variants
+const containerVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const fadeUpVariants = {
+  hidden: { opacity: 0, y: 28 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.85, ease: [0.22, 1, 0.36, 1] as const },
+  },
+};
+
+const titleVariants = {
+  hidden: {},
+  visible: {
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.1,
+    }
+  }
+};
+
+const wordVariants = {
+  hidden: { opacity: 0, y: 30, filter: 'blur(8px)' },
+  visible: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 1.0, ease: [0.16, 1, 0.3, 1] as const },
+  }
+};
+
+const panelVariants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] as const, delay: 0.25 },
+  },
+};
+
+// Title words/lines to animate individually
+const titleLines = ['CPCB', 'Compliance.', 'Automated.'];
+
 export const Hero = (props: HeroProps) => {
-  const heroRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reducedMotion) return;
-
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.1 });
-
-      tl.from('.hero-eyebrow', {
-        y: 16,
-        opacity: 0,
-        duration: 0.7,
-        ease: 'power3.out',
-      })
-        .from(
-          '.hero-title-line',
-          {
-            y: '100%',
-            opacity: 0,
-            duration: 1.1,
-            stagger: 0.12,
-            ease: 'power4.out',
-          },
-          '-=0.3'
-        )
-        .from(
-          '.hero-sub',
-          {
-            y: 20,
-            opacity: 0,
-            duration: 0.9,
-            stagger: 0.15,
-            ease: 'power3.out',
-          },
-          '-=0.5'
-        )
-        .from(
-          '.hero-panel',
-          {
-            y: 30,
-            opacity: 0,
-            duration: 1,
-            ease: 'power3.out',
-          },
-          '-=0.6'
-        );
-    }, heroRef);
-
-    return () => ctx.revert();
-  }, []);
-
   return (
-    <section className="hero-section" id="hero-section" ref={heroRef}>
+    <section className="hero-section" id="hero-section">
       <div className="container hero-grid">
-        {/* LEFT: Editorial statement */}
-        <div className="hero-copy">
-          <div className="hero-eyebrow">
+        {/* LEFT: Editorial copy */}
+        <motion.div
+          className="hero-copy"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Eyebrow */}
+          <motion.div className="hero-eyebrow" variants={fadeUpVariants}>
             <span className="hero-eyebrow-dot" />
             <span>CPCB_ENFORCEMENT — ACTIVE</span>
-          </div>
+          </motion.div>
 
-          <h1 className="hero-title" aria-label="CPCB Compliance. Automated.">
-            <span className="hero-title-overflow">
-              <span className="hero-title-line">CPCB</span>
-            </span>
-            <span className="hero-title-overflow">
-              <span className="hero-title-line">Compliance.</span>
-            </span>
-            <span className="hero-title-overflow">
-              <span className="hero-title-line hero-title-accent">Automated.</span>
-            </span>
-          </h1>
+          {/* Title — word-by-word reveal */}
+          <motion.h1 
+            className="hero-title" 
+            aria-label="CPCB Compliance. Automated."
+            variants={titleVariants}
+          >
+            {titleLines.map((line, i) => (
+              <motion.span
+                key={i}
+                className={`hero-title-line${i === 2 ? ' hero-title-accent' : ''}`}
+                variants={wordVariants}
+                style={{ display: 'inline-block', marginRight: i !== 2 ? '0.2em' : '0' }}
+              >
+                {line}
+              </motion.span>
+            ))}
+          </motion.h1>
 
-          <p className="hero-subtitle hero-sub">
+          {/* Subtitle */}
+          <motion.p className="hero-subtitle" variants={fadeUpVariants}>
             Voyant Systems retrofits diesel generator sets with certified RECD
             emission filters and an AI-driven edge monitoring stack — so your
             site stays compliant around the clock, without replacing existing
             assets.
-          </p>
+          </motion.p>
 
-          <div className="hero-actions hero-sub">
-            <a
-              href="#contact"
-              className="hero-cta-primary"
-              id="btn-hero-pitch"
-            >
+          {/* CTAs */}
+          <motion.div className="hero-actions" variants={fadeUpVariants}>
+            <a href="#contact" className="hero-cta-primary" id="btn-hero-pitch">
               Discuss a Project
               <ArrowRight size={15} />
             </a>
-            <a
-              href="#solutions"
-              className="hero-cta-secondary"
-              id="btn-hero-solutions"
-            >
+            <a href="#solutions" className="hero-cta-secondary" id="btn-hero-solutions">
               How it works
             </a>
-          </div>
+          </motion.div>
 
           {/* Proof strip */}
-          <div className="hero-proof hero-sub">
+          <motion.div className="hero-proof" variants={fadeUpVariants}>
             <div className="hero-proof-item">
               <span className="hero-proof-number">84.5%</span>
               <span className="hero-proof-label">avg. PM capture</span>
@@ -122,11 +127,17 @@ export const Hero = (props: HeroProps) => {
               <span className="hero-proof-number">4 hr</span>
               <span className="hero-proof-label">typical install time</span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* RIGHT: Live telemetry panel */}
-        <div className="hero-panel" aria-label="Live RECD telemetry dashboard">
+        <motion.div
+          className="hero-panel"
+          aria-label="Live RECD telemetry dashboard"
+          variants={panelVariants}
+          initial="hidden"
+          animate="visible"
+        >
           <div className="hero-panel-label">
             <span className="hero-panel-dot" />
             LIVE_TELEMETRY — NODE_RECD_02
@@ -134,14 +145,20 @@ export const Hero = (props: HeroProps) => {
           <div className="hero-panel-inner">
             <TelemetryPanel {...props} />
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll cue */}
-      <div className="hero-scroll-cue" aria-hidden="true">
+      <motion.div
+        className="hero-scroll-cue"
+        aria-hidden="true"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 0.8 }}
+      >
         <span className="hero-scroll-label">SCROLL</span>
         <span className="hero-scroll-line" />
-      </div>
+      </motion.div>
     </section>
   );
 };

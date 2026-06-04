@@ -183,10 +183,22 @@ body::after {
 
 .hero-title {
   margin-bottom: 1.75rem;
+}
+
+.hero-title-line {
   background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 50%, var(--accent-cyan) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  color: transparent;
+}
+
+.hero-title-accent {
+  background: linear-gradient(180deg, #ffffff 0%, var(--accent-orange) 100%) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  color: transparent !important;
 }
 
 .hero-subtitle {
